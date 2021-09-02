@@ -9,14 +9,14 @@ public static class CLocalisation
 {
     public static event Action reloadText;
 
-    private static SortedList<string, string> uiString;
+    private static SortedList<string, string> localStrings;
 
     public static bool Init()
     {
         reloadText = null;
-        if (uiString != null) return false;
+        if (localStrings != null) return false;
         
-        uiString = new SortedList<string, string>();
+        localStrings = new SortedList<string, string>();
         return true;
     }
 
@@ -24,16 +24,16 @@ public static class CLocalisation
     {
         CLocal local;
         GameObject loc = MonoBehaviour.Instantiate(_localPrefab);
-        uiString.Clear();
+        localStrings.Clear();
         local = loc.GetComponent<CLocal>();
-        local.Init(uiString);
+        local.Init(localStrings);
         MonoBehaviour.Destroy(loc);
         reloadText?.Invoke();
     }
 
     public static string GetString(string _key)
     {
-        if (uiString.TryGetValue(_key, out string value))
+        if (localStrings.TryGetValue(_key, out string value))
             return value;
             
         return $"<<empty key[{_key}]>>";
