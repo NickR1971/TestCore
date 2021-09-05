@@ -52,7 +52,7 @@ public class CSaveFile
 
 	public string GetProfile() => profileName;
 
-	public bool IsSavedFileExist() => profileData.savedList.Length > 1;
+	public bool IsSavedFileExist() => profileData.IsSaveExist();
 
 	public bool IsSavedFileExist(string _name)
     {
