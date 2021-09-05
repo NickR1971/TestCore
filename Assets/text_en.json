@@ -1,0 +1,19 @@
+{ "loc": [
+{ "key": "core_language", "value": "english" },
+{ "key": "core_newGame", "value": "New game" },
+{ "key": "core_loadGame", "value": "Load game" },
+{ "key": "core_saveGame", "value": "Save game" },
+{ "key": "core_continueGame", "value": "Continue game" },
+{ "key": "core_settings", "value": "Settings" },
+{ "key": "core_quit", "value": "Quit" },
+{ "key": "core_mainMenu", "value": "Main menu" },
+{ "key": "core_yes", "value": "Yes" },
+{ "key": "core_no", "value": "No" },
+{ "key": "core_cancel", "value": "Cancel" },
+{ "key": "core_newSave", "value": "New save" },
+{ "key": "core_overwrite", "value": "Overwrite" },
+{ "key": "msg_remove", "value": "Remove" },
+{ "key": "msg_areYouSure", "value": "Are you sure?" },
+{ "key": "msg_helloWorld", "value": "\"test\" Hello, world!" },
+{ "key": "core_empty", "value": "" }
+] }

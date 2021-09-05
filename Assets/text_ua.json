@@ -1,0 +1,19 @@
+{ "loc": [
+{ "key": "core_language", "value": "українська" },
+{ "key": "core_newGame", "value": "Нова гра" },
+{ "key": "core_loadGame", "value": "Завантажити гру" },
+{ "key": "core_saveGame", "value": "Зберегти гру" },
+{ "key": "core_continueGame", "value": "Продовжити гру" },
+{ "key": "core_settings", "value": "Налаштування" },
+{ "key": "core_quit", "value": "Вихід" },
+{ "key": "core_mainMenu", "value": "Головне меню" },
+{ "key": "core_yes", "value": "Так" },
+{ "key": "core_no", "value": "Ні" },
+{ "key": "core_cancel", "value": "Відміна" },
+{ "key": "core_newSave", "value": "Нове збереження" },
+{ "key": "core_overwrite", "value": "Перезаписати" },
+{ "key": "msg_remove", "value": "Видалити" },
+{ "key": "msg_areYouSure", "value": "Ви впевнені?" },
+{ "key": "msg_helloWorld", "value": "\"test\" Привіт, світ!" },
+{ "key": "core_empty", "value": "" }
+] }

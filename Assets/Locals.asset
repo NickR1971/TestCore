@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Locals
   m_EditorClassIdentifier: 
   textLocal:
-  - {fileID: 4900000, guid: 4f6d82f4c2f14ea42b9a9d54afc1c856, type: 3}
-  - {fileID: 4900000, guid: 93cce1d30fb7bf74096bdca028c6be8a, type: 3}
+  - {fileID: 4900000, guid: b6d57c4426105f144b3000af8b94dba2, type: 3}
+  - {fileID: 4900000, guid: a5a4887f4e6a748458332a26e00d270c, type: 3}
   enumName: ELocalStringID
