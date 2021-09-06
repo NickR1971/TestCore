@@ -15,5 +15,14 @@
 { "key": "msg_remove", "value": "Remove" },
 { "key": "msg_areYouSure", "value": "Are you sure?" },
 { "key": "msg_helloWorld", "value": "\"test\" Hello, world!" },
+{ "key": "err_unknown", "value": "Unknown error" },
+{ "key": "err_error", "value": "Error" },
+{ "key": "err_invalidName", "value": "Invalid name" },
+{ "key": "err_invalidExpression", "value": "Invalid expression" },
+{ "key": "err_undefinedOperation", "value": "Undefined operation" },
+{ "key": "err_divZero", "value": "Divide by zero" },
+{ "key": "err_noCommnand", "value": "Command not found" },
+{ "key": "err_noParam", "value": "Parameter not found" },
+{ "key": "err_invalidParam", "value": "Invalid parameter" },
 { "key": "core_empty", "value": "" }
 ] }

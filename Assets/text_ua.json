@@ -15,5 +15,14 @@
 { "key": "msg_remove", "value": "Видалити" },
 { "key": "msg_areYouSure", "value": "Ви впевнені?" },
 { "key": "msg_helloWorld", "value": "\"test\" Привіт, світ!" },
+{ "key": "err_unknown", "value": "Невідома помилка" },
+{ "key": "err_error", "value": "Помилка" },
+{ "key": "err_invalidName", "value": "Некоретне ім'я" },
+{ "key": "err_invalidExpression", "value": "Вираз некоректний" },
+{ "key": "err_undefinedOperation", "value": "Невідома операція" },
+{ "key": "err_divZero", "value": "Поділ на нуль" },
+{ "key": "err_noCommnand", "value": "Команду не знайдкно" },
+{ "key": "err_noParam", "value": "Відсутній параметер" },
+{ "key": "err_invalidParam", "value": "Некоректний параметер" },
 { "key": "core_empty", "value": "" }
 ] }

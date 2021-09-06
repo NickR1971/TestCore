@@ -49,7 +49,7 @@ public class CRecord : MonoBehaviour
         if (CUtil.CheckNameForSave(_name)) OnSaveCheck(_name.Replace('.','_'));
         else
         {
-            dialog.OpenDialog(EDialog.Error, CLocalisation.GetString(ELocalStringID.core_empty) + " " + _name); //err_invalidName
+            dialog.OpenDialog(EDialog.Error, CLocalisation.GetString(ELocalStringID.err_invalidName) + " " + _name);
         }
     }
     public void OnNewSave()
