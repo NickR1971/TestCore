@@ -12,6 +12,7 @@
 { "key": "core_cancel", "value": "Відміна" },
 { "key": "core_newSave", "value": "Нове збереження" },
 { "key": "core_overwrite", "value": "Перезаписати" },
+{ "key": "core_profile", "value": "Профіль" },
 { "key": "msg_remove", "value": "Видалити" },
 { "key": "msg_areYouSure", "value": "Ви впевнені?" },
 { "key": "msg_helloWorld", "value": "\"test\" Привіт, світ!" },

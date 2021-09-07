@@ -12,6 +12,7 @@
 { "key": "core_cancel", "value": "Cancel" },
 { "key": "core_newSave", "value": "New save" },
 { "key": "core_overwrite", "value": "Overwrite" },
+{ "key": "core_profile", "value": "Profile" },
 { "key": "msg_remove", "value": "Remove" },
 { "key": "msg_areYouSure", "value": "Are you sure?" },
 { "key": "msg_helloWorld", "value": "\"test\" Hello, world!" },
