@@ -3,45 +3,37 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class ApplicationManager : MonoBehaviour, IMainMenu, ISaveLoad
+public class ApplicationManager : MonoBehaviour, IMainMenu, ISaveLoad, IGame
 {
-	private static uint gameID;
-	//private static CGameManager gameManager = null;
-
 	[SerializeField] private int sceneID;
 	private UsedLocal usedLanguage=UsedLocal.english;
 	[SerializeField] Canvas uiCanvas;
 	[SerializeField] private GameObject startUIobject;
-	[SerializeField] private GameObject settingsMenu;
-	[SerializeField] private CDialog dialog;
-    [SerializeField] private CSaveLoad saveLoadWindow;
+	[SerializeField] private GameObject prefabSettingsMenu;
+	[SerializeField] private GameObject prefabDialogWindow;
+    [SerializeField] private GameObject prefabSaveLoadWindow;
 	[SerializeField] private GameObject prefabGameConsole;
 	[SerializeField] private GameObject[] localData=new GameObject[2];
 	private CUI startUI;
 	private CSaveFile saveFile;
+    private CSaveLoad saveLoad;
+	private CSettings settings;
+	private IDialog dialog;
 	private UImanager uiManager;
 	private IGameConsole gameConsole;
-	//private IGame game;
+	private IGame game;
 
 
     private void Awake()
     {
 		SettingsData settingsData;
-/*
-		game = GetComponent<IGame>();
-		if (gameManager == null) gameManager = new CGameManager();
-		game.Init(gameManager);
-		SaveData data = game.GetData();
-*/		
-		AllServices.Container.Register<IDialog>(dialog);
-		AllServices.Container.Register<IMainMenu>(this);
-		AllServices.Container.Register<ISaveLoad>(this);
-//		AllServices.Container.Register<IGame>(game);
 
-		/*if (data == null)
-		{
-			Debug.LogError("Save data not created");
-		}*/
+		game = this;
+		SaveData data = game.GetData();
+
+		AllServices.Container.Register<IMainMenu>(this);
+		AllServices.Container.Register<IGame>(game);
+
 		saveFile = new CSaveFile();
 		saveFile.LoadSettings(out settingsData);
 		if(settingsData==null)
@@ -58,12 +50,21 @@ public class ApplicationManager : MonoBehaviour, IMainMenu, ISaveLoad
 		AllServices.Container.Register<IUI>(uiManager);
 		uiManager.Init();
 
-		startUI = startUIobject.GetComponent<CUI>();
-		saveLoadWindow.InittInterface();
+		dialog = Instantiate(prefabDialogWindow, uiCanvas.transform).GetComponent<IDialog>();
+		saveLoad = Instantiate(prefabSaveLoadWindow, uiCanvas.transform).GetComponent<CSaveLoad>();
+		settings = Instantiate(prefabSettingsMenu, uiCanvas.transform).GetComponent<CSettings>();
+
+		AllServices.Container.Register<IDialog>(dialog);
+		AllServices.Container.Register<ISaveLoad>(this);
+
+		startUI = Instantiate(startUIobject, uiCanvas.transform).GetComponent<CUI>();
+
+		saveLoad.InittInterface();
 
 		GameObject vGameConsole = Instantiate(prefabGameConsole, uiCanvas.transform);
 		gameConsole = vGameConsole.GetComponent<CGameConsole>().GetIGameConsole();
 		AllServices.Container.Register<IGameConsole>(gameConsole);
+
 	}
 
 	private void OnDestroy()
@@ -91,22 +92,21 @@ public class ApplicationManager : MonoBehaviour, IMainMenu, ISaveLoad
 
 	public void Save(string _name)
 	{
-		//game.OnSave();
-		//saveFile.Save(_name, game.GetData());
+		game.OnSave();
+		saveFile.Save(_name, game.GetData());
 	}
 
 	public void Load(string _name)
 	{
-		/*if (IsSavedGameExist())
+		if (IsSavedGameExist())
 		{
 			SaveData data = game.GetData();
 			saveFile.Load(_name, out data);
-			gameID = data.id;
-			gameManager.SetGameData(data); //-----??
+			CGameManager.SetGameData(data); //-----??
 			GoToMainScene();
 		}
 		else
-			Debug.LogError("There is no save data!");*/
+			Debug.LogError("There is no save data!");
 	}
 
 	public void RemoveSave(string _name)
@@ -119,7 +119,7 @@ public class ApplicationManager : MonoBehaviour, IMainMenu, ISaveLoad
 	//--------------------------------------------------------------
 	// IMainMenu interface
 	//--------------------------------------------------------------
-	public bool IsGameExist() => gameID > 0;
+	public bool IsGameExist() => game.GetData()!=null;
 
 	public void SetLanguage(UsedLocal _language)
     {
@@ -138,43 +138,41 @@ public class ApplicationManager : MonoBehaviour, IMainMenu, ISaveLoad
 
 	public void NewGame()
 	{
-/*		SaveData data = game.GetData();
-		gameID = (uint)UnityEngine.Random.Range(100, 10000000);
+		SaveData data = game.GetData();
 		if (data == null)
 		{
 			data = new SaveData();
-			gameManager.SetGameData(data); // ??
+			CGameManager.SetGameData(data); // ??
 		}
 
-		data.id = gameID;
-		data.SetColor(Color.gray);
-		GoToMainScene();*/
+		data.id = (uint)UnityEngine.Random.Range(100, 10000000);
+		GoToMainScene();
 	}
 
 	public void GoToMainScene()
 	{
-		//SceneManager.LoadScene("MainScene");
+		SceneManager.LoadScene("SceneBase");
 	}
 
 	public void MainMenuScene()
 	{
-        //game.OnSave();
-		//SceneManager.LoadScene("LogoScene");
+        game.OnSave();
+		SceneManager.LoadScene("SceneLogo");
 	}
 
 	public void Save()
 	{
-		saveLoadWindow.OpenSaveWindow();
+		saveLoad.OpenSaveWindow();
 	}
 
 	public void Load()
 	{
-		saveLoadWindow.OpenLoadWindow();
+		saveLoad.OpenLoadWindow();
 	}
 
 	public void OpenSettings()
     {
-		uiManager.OpenUI(settingsMenu.GetComponent<CUI>());
+		uiManager.OpenUI(settings);
     }
 
 	public void Quit()
@@ -190,4 +188,27 @@ public class ApplicationManager : MonoBehaviour, IMainMenu, ISaveLoad
 		Application.Quit();
 		#endif
 	}
+
+	//--------------------------------------------------------------
+	// IGame interface
+	//--------------------------------------------------------------
+	public SaveData GetData()
+    {
+		return CGameManager.GetData();
+    }
+
+    public void OnSave()
+    {
+		CGameManager.OnSave();
+    }
+
+    public void AddOnSaveAction(Action _a)
+    {
+		CGameManager.onSave += _a;
+    }
+
+    public void RemoveOnSaveAction(Action _a)
+    {
+		CGameManager.onSave -= _a;
+    }
 }
