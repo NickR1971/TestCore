@@ -8,13 +8,14 @@ public class ApplicationManager : MonoBehaviour, IMainMenu, ISaveLoad, IGame
 	[SerializeField] private int sceneID;
 	private UsedLocal usedLanguage=UsedLocal.english;
 	[SerializeField] Canvas uiCanvas;
-	[SerializeField] private GameObject startUIobject;
+	[SerializeField] CUI uiStart;
+	[SerializeField] private GameObject prefabMainMenu;
 	[SerializeField] private GameObject prefabSettingsMenu;
 	[SerializeField] private GameObject prefabDialogWindow;
     [SerializeField] private GameObject prefabSaveLoadWindow;
 	[SerializeField] private GameObject prefabGameConsole;
 	[SerializeField] private GameObject[] localData=new GameObject[2];
-	private CUI startUI;
+	private CUI mainMenu;
 	private CSaveFile saveFile;
     private CSaveLoad saveLoad;
 	private CSettings settings;
@@ -57,7 +58,7 @@ public class ApplicationManager : MonoBehaviour, IMainMenu, ISaveLoad, IGame
 		AllServices.Container.Register<IDialog>(dialog);
 		AllServices.Container.Register<ISaveLoad>(this);
 
-		startUI = Instantiate(startUIobject, uiCanvas.transform).GetComponent<CUI>();
+		mainMenu = Instantiate(prefabMainMenu, uiCanvas.transform).GetComponent<CUI>();
 
 		saveLoad.InittInterface();
 
@@ -74,7 +75,8 @@ public class ApplicationManager : MonoBehaviour, IMainMenu, ISaveLoad, IGame
 
     private void Start()
     {
-		uiManager.OpenUI(startUI);
+		uiManager.OpenUI(mainMenu);
+		uiManager.OpenUI(uiStart);
     }
 
 	//-----------------------------------------------------

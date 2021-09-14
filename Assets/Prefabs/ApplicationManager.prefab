@@ -45,7 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneID: 0
   uiCanvas: {fileID: 0}
-  startUIobject: {fileID: 6896513561778335512, guid: 129e9005ebc5a4543b72f08c678a1601,
+  prefabMainMenu: {fileID: 6896513561778335512, guid: 129e9005ebc5a4543b72f08c678a1601,
     type: 3}
   prefabSettingsMenu: {fileID: 5544953563791908083, guid: 5a88c5d0cd625934798068d2b2856593,
     type: 3}
