@@ -10,6 +10,7 @@ public interface IMainMenu : IService
 	void NewGame();
 	void GoToMainScene();
 	void MainMenuScene();
+	void OpenStartUI();
 	void Save();
 	void Load();
 	void OpenSettings();

@@ -7,16 +7,21 @@ using UnityEngine.SceneManagement;
 public class CMainMenu : CMenu
 {
     private Button loadButton = null;
-    ISaveLoad iSaveLoad;
+    private ISaveLoad iSaveLoad;
+    private int sceneIndex;
+
     void Start()
     {
         InitMenu();
         iSaveLoad = AllServices.Container.Get<ISaveLoad>();
-        int sceneIndex = SceneManager.GetActiveScene().buildIndex;
+        sceneIndex = SceneManager.GetActiveScene().buildIndex;
 
         if (sceneIndex == 0) AddButton(ELocalStringID.core_newGame).onClick.AddListener(NewGame);
         if (iMainMenu.IsGameExist())
+        {
             AddButton(ELocalStringID.core_continueGame).onClick.AddListener(ContinueGame);
+            AddButton(ELocalStringID.core_saveGame).onClick.AddListener(SaveGame);
+        }
         AddButton(ELocalStringID.core_loadGame).onClick.AddListener(LoadGame);
         loadButton = LastButton();
         loadButton.interactable = iSaveLoad.IsSavedGameExist();
@@ -25,7 +30,8 @@ public class CMainMenu : CMenu
 
         AddButton(ELocalStringID.core_quit).onClick.AddListener(QuitGame);
     }
-    private void OnEnable()
+
+    public override void OnOpen()
     {
         iSaveLoad = AllServices.Container.Get<ISaveLoad>();
         if (loadButton != null)
@@ -46,7 +52,13 @@ public class CMainMenu : CMenu
 
     public void ContinueGame()
     {
-        iMainMenu.GoToMainScene();
+        if (sceneIndex == 0) iMainMenu.GoToMainScene();
+        else iMainMenu.OpenStartUI();
+    }
+
+    public void SaveGame()
+    {
+        iMainMenu.Save();
     }
 
     public void LoadGame()

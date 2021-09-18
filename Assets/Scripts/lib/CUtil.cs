@@ -22,4 +22,9 @@ public static class CUtil
     {
         return float.Parse(_str.Replace('.', ','));
     }
+
+    public static void LogConsole(string _msg)
+    {
+        AllServices.Container.Get<IGameConsole>().ShowMessage(_msg);
+    }
 }

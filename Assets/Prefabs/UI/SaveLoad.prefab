@@ -1549,7 +1549,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   saveName: {fileID: 8422890589395621812}
   manager: {fileID: 8422890589394209826}
-  buttonText: {fileID: 0}
+  buttonText: {fileID: 8683901607538265448}
   ActionButton: {fileID: 8422890588359581090}
   DeleteButton: {fileID: 8422890589280275023}
 --- !u!1 &8422890589988580510

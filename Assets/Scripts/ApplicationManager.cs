@@ -129,6 +129,11 @@ public class ApplicationManager : MonoBehaviour, IMainMenu, ISaveLoad, IGame
 		CLocalisation.LoadLocalPrefab(localData[(int)_language]);
     }
 
+	public void OpenStartUI()
+    {
+		uiManager.OpenUI(uiStart);
+	}
+
 	public void SaveSettings()
     {
 		SettingsData data = new SettingsData();

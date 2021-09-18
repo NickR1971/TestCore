@@ -13,14 +13,13 @@ public class ProfileData
     {
         savedGamesNumber = 0;
         savedList = new List<string>();
-        savedList.Add("new save");
     }
 
-    public bool IsSaveExist() => savedList.Count > 1;
+    public bool IsSaveExist() => savedList.Count > 0;
 
     public void AddSave(string _name)
     {
-        savedList.Insert(1, _name);
+        savedList.Insert(0, _name);
     }
 
     public bool RemoveSave(string _name)
