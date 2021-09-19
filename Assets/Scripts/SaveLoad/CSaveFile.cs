@@ -67,12 +67,12 @@ public class CSaveFile
 		file.Close();
     }
 
-	public void Save(string _name,SaveData _data)
+	public void Save(string _name, SaveData _data)
     {
 		profileData.RemoveSave(_name);
 		profileData.AddSave(_name);
 		SaveProfile();
-		SaveFile<SaveData>(_data, CreateSaveFileName(_name));
+		SaveFile(_data, CreateSaveFileName(_name));
     }
 
 	private string CreateSaveFileName(string _name) => Application.persistentDataPath + "/" + profileName.Trim() + "_" + _name.Trim() + "_save.dat";
@@ -91,7 +91,7 @@ public class CSaveFile
 	public void Load(string _name,out SaveData _data)
     {
 		SaveData data;
-		LoadFile<SaveData>(out data, CreateSaveFileName(_name));
+		LoadFile(out data, CreateSaveFileName(_name));
 		_data = data;
 		if (_data==null)
 		{
