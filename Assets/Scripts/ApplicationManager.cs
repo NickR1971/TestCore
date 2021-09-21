@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class ApplicationManager : MonoBehaviour, IMainMenu, ISaveLoad, IGame
+public class ApplicationManager : MonoBehaviour, IMainMenu, ISaveLoad
 {
 	[SerializeField] private int sceneID;
 	private UsedLocal usedLanguage=UsedLocal.english;
@@ -29,7 +29,7 @@ public class ApplicationManager : MonoBehaviour, IMainMenu, ISaveLoad, IGame
     {
 		SettingsData settingsData;
 
-		game = this;
+		game = GetComponent<IGame>();
 		SaveData data = game.GetData();
 
 		AllServices.Container.Register<IMainMenu>(this);
@@ -196,26 +196,4 @@ public class ApplicationManager : MonoBehaviour, IMainMenu, ISaveLoad, IGame
 		#endif
 	}
 
-	//--------------------------------------------------------------
-	// IGame interface
-	//--------------------------------------------------------------
-	public SaveData GetData()
-    {
-		return CGameManager.GetData();
-    }
-
-    public void OnSave()
-    {
-		CGameManager.OnSave();
-    }
-
-    public void AddOnSaveAction(Action _a)
-    {
-		CGameManager.onSave += _a;
-    }
-
-    public void RemoveOnSaveAction(Action _a)
-    {
-		CGameManager.onSave -= _a;
-    }
 }

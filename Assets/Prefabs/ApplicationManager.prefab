@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8598674203293981751}
   - component: {fileID: 8598674203293981744}
+  - component: {fileID: 2806019157323816161}
   m_Layer: 0
   m_Name: ApplicationManager
   m_TagString: Untagged
@@ -45,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneID: 0
   uiCanvas: {fileID: 0}
+  uiStart: {fileID: 0}
   prefabMainMenu: {fileID: 6896513561778335512, guid: 129e9005ebc5a4543b72f08c678a1601,
     type: 3}
   prefabSettingsMenu: {fileID: 5544953563791908083, guid: 5a88c5d0cd625934798068d2b2856593,
@@ -58,3 +60,15 @@ MonoBehaviour:
   localData:
   - {fileID: 2083960237438644689, guid: 8ee6e9c6b201b2a4e957f6570e5eca96, type: 3}
   - {fileID: 262507705027455733, guid: 7584d98a699aeae4badf922b4691f370, type: 3}
+--- !u!114 &2806019157323816161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8598674203293981745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03137c349f11a004391c5abffb38c47e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

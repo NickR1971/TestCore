@@ -7,19 +7,26 @@ using UnityEngine.UI;
 public class CGameConsoleCommand
 {
     public string command;
-    public ELocalStringID hint;
+    public string strHint;
     public Action<string> action;
 
     public CGameConsoleCommand()
     {
         command = "none";
-        hint = ELocalStringID.core_empty;
+        strHint = "";
         action = null;
     }
     public CGameConsoleCommand(string _cmd, Action<string> _act=null, ELocalStringID _hint=ELocalStringID.core_empty)
     {
         command = _cmd;
-        hint = _hint;
+        strHint = CLocalisation.GetString(_hint);
+        action = _act;
+    }
+
+    public CGameConsoleCommand(string _cmd, Action<string> _act, string _hint)
+    {
+        command = _cmd;
+        strHint = _hint;
         action = _act;
     }
 }
@@ -74,6 +81,14 @@ public class CGameConsole : MonoBehaviour, IGameConsole
         commandsList.Add(_command.command, _command);
     }
 
+    public void RemoveCommand(string _cmdName)
+    {
+        if (commandsList.ContainsKey(_cmdName))
+        {
+            commandsList.Remove(_cmdName);
+        }
+    }
+
     public void ShowMessage(string _message)
     {
         GameObject newString;
@@ -102,7 +117,7 @@ public class CGameConsole : MonoBehaviour, IGameConsole
     {
         foreach(var cmd in commandsList)
         {
-            ShowMessage($"{ cmd.Key} {CLocalisation.GetString(cmd.Value.hint)}");
+            ShowMessage($"{ cmd.Key} {cmd.Value.strHint}");
         }
     }
 
