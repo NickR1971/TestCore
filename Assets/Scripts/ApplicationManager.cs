@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class ApplicationManager : MonoBehaviour, IMainMenu, ISaveLoad
+public class ApplicationManager : MonoBehaviour, IMainMenu
 {
 	[SerializeField] private int sceneID;
 	private UsedLocal usedLanguage=UsedLocal.english;
@@ -18,6 +18,7 @@ public class ApplicationManager : MonoBehaviour, IMainMenu, ISaveLoad
 	private CUI mainMenu;
 	private CSaveFile saveFile;
     private CSaveLoad saveLoad;
+	private SaveLoad iSaveLoad;
 	private CSettings settings;
 	private IDialog dialog;
 	private UImanager uiManager;
@@ -42,7 +43,9 @@ public class ApplicationManager : MonoBehaviour, IMainMenu, ISaveLoad
 			settingsData = new SettingsData();
         }
 		usedLanguage = settingsData.selected;
-		SetProfile(settingsData.profileName);
+		iSaveLoad = GetComponent<SaveLoad>();
+		iSaveLoad.Init(saveFile);
+		iSaveLoad.SetProfile(settingsData.profileName);
 
 		if (CLocalisation.Init())
 			CLocalisation.LoadLocalPrefab(localData[(int)usedLanguage]);
@@ -56,7 +59,7 @@ public class ApplicationManager : MonoBehaviour, IMainMenu, ISaveLoad
 		settings = Instantiate(prefabSettingsMenu, uiCanvas.transform).GetComponent<CSettings>();
 
 		AllServices.Container.Register<IDialog>(dialog);
-		AllServices.Container.Register<ISaveLoad>(this);
+		AllServices.Container.Register<ISaveLoad>(iSaveLoad);
 
 		mainMenu = Instantiate(prefabMainMenu, uiCanvas.transform).GetComponent<CUI>();
 
@@ -79,45 +82,6 @@ public class ApplicationManager : MonoBehaviour, IMainMenu, ISaveLoad
 		uiManager.OpenUI(uiStart);
     }
 
-	//-----------------------------------------------------
-	// ISaveLoad
-	//-----------------------------------------------------
-	public string GetProfile() => saveFile.GetProfile();
-
-	public bool SetProfile(string _name)
-    {
-		return saveFile.SetProfile(_name);
-    }
-
-	public bool IsSavedGameExist() => saveFile.IsSavedFileExist();
-	public bool IsSavedGameExist(string _name) => saveFile.IsSavedFileExist(_name);
-
-	public void Save(string _name)
-	{
-		game.OnSave();
-		saveFile.Save(_name, game.GetData());
-	}
-
-	public void Load(string _name)
-	{
-		if (IsSavedGameExist())
-		{
-			SaveData data = game.GetData();
-			saveFile.Load(_name, out data);
-			CGameManager.SetGameData(data); //-----??
-			GoToMainScene();
-		}
-		else
-			Debug.LogError("There is no save data!");
-	}
-
-	public void RemoveSave(string _name)
-	{
-		saveFile.ResetData(_name);
-	}
-
-	public string[] GetSavedList() => saveFile.GetSavedList();
-
 	//--------------------------------------------------------------
 	// IMainMenu interface
 	//--------------------------------------------------------------
@@ -137,7 +101,7 @@ public class ApplicationManager : MonoBehaviour, IMainMenu, ISaveLoad
 	public void SaveSettings()
     {
 		SettingsData data = new SettingsData();
-		data.profileName = GetProfile();
+		data.profileName = iSaveLoad.GetProfile();
 		data.selected = usedLanguage;
 		saveFile.SaveSettings(data);
 		uiManager.CloseUI();
