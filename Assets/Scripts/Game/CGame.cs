@@ -7,13 +7,11 @@ public class CGame : MonoBehaviour, IGame
 {
     private IDialog dialog;
     private IGameConsole gameConsole;
-    private CRand rand;
 
     private void Start()
     {
         dialog = AllServices.Container.Get<IDialog>();
         gameConsole = AllServices.Container.Get<IGameConsole>();
-        //rand = new CRand(GetData().id);
     }
 
     //--------------------------------------------------------------

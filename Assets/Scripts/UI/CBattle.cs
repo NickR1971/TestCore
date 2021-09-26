@@ -12,5 +12,6 @@ public class CBattle : CUI
     {
         InitUI();
         game = AllServices.Container.Get<IGame>();
+        rand = new CRand(game.GetData().id);
     }
 }

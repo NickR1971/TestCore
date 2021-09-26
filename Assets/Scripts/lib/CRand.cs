@@ -29,7 +29,7 @@ public class CRand
 		return (int)Dice((uint)(_max - _min) + 1) + _min - 1;
     }
 	// устанавливает случайное значение x0
-	public void Randomize() { Reset( (uint)(Random.value*10000000.0f)); }
+	public void Randomize() { Reset( (uint)(Random.value*Time.unscaledTime*10000000.0f)); }
 
 //private:
 	// собственно формула расчета - если надо использовать значение m
