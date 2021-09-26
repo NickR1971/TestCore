@@ -13,12 +13,14 @@ public class TestDice : MonoBehaviour
         rand = new CRand(1);
         rand.Randomize();
         gameConsole.AddCommand(new CGameConsoleCommand("dice", Dice,"dice number - roll dice with number faces"));
-        gameConsole.AddCommand(new CGameConsoleCommand("testdice", Test,"testdice number count - roll dice number and check statistic"));
+        gameConsole.AddCommand(new CGameConsoleCommand("testdice", Test,"testdice number count - check statistic for dice"));
+        gameConsole.AddCommand(new CGameConsoleCommand("range", Range,"range min max - get random value in diapasone"));
     }
     private void OnDestroy()
     {
         gameConsole.RemoveCommand("dice");
         gameConsole.RemoveCommand("testdice");
+        gameConsole.RemoveCommand("range");
     }
     private void Dice(string _arg)
     {
@@ -31,6 +33,25 @@ public class TestDice : MonoBehaviour
             gameConsole.ShowMessage($"d{d}={v}");
         }
     }
+
+    private void Range(string _arg)
+    {
+        int m1, m2, i;
+
+        if (CUtil.IsDigit(_arg[0]))
+        {
+            m1 = CUtil.StringToInt(_arg);
+            i = 0;
+            while (CUtil.IsDigit(_arg[i])) i++;
+            while (_arg[i] == ' ') i++;
+            if (CUtil.IsDigit(_arg[i]))
+            {
+                m2 = CUtil.StringToInt(_arg.Substring(i));
+                i = rand.Range(m1, m2);
+                gameConsole.ShowMessage($"Range({m1},{m2})={i}");
+            }
+        }
+     }
 
     private void Test(string _arg)
     {
