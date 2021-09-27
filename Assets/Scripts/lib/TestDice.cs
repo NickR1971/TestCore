@@ -2,25 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestDice : MonoBehaviour
+public class TestDice : ConsoleService
 {
-    private IGameConsole gameConsole;
     private CRand rand;
 
     private void Start()
     {
-        gameConsole = AllServices.Container.Get<IGameConsole>();
+        Init();
         rand = new CRand(1);
         rand.Randomize();
-        gameConsole.AddCommand(new CGameConsoleCommand("dice", Dice,"dice number - roll dice with number faces"));
-        gameConsole.AddCommand(new CGameConsoleCommand("testdice", Test,"testdice number count - check statistic for dice"));
-        gameConsole.AddCommand(new CGameConsoleCommand("range", Range,"range min max - get random value in diapasone"));
-    }
-    private void OnDestroy()
-    {
-        gameConsole.RemoveCommand("dice");
-        gameConsole.RemoveCommand("testdice");
-        gameConsole.RemoveCommand("range");
+        AddCommand("dice", Dice,"dice number - roll dice with number faces");
+        AddCommand("testdice", Test,"testdice number count - check statistic for dice");
+        AddCommand("range", Range,"range min max - get random value in diapasone");
     }
     private void Dice(string _arg)
     {
