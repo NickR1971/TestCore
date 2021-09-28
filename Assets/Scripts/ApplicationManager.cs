@@ -80,7 +80,7 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
     {
 		uiManager.OpenUI(mainMenu);
 		uiManager.OpenUI(uiStart);
-    }
+	}
 
 	//--------------------------------------------------------------
 	// IMainMenu interface
