@@ -17,8 +17,8 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
 	[SerializeField] private GameObject[] localData=new GameObject[2];
 	private CUI mainMenu;
 	private CSaveFile saveFile;
-    private CSaveLoad saveLoad;
-	private SaveLoad iSaveLoad;
+    private CSaveLoad saveLoadWindow;
+	private SaveLoad saveLoad;
 	private CSettings settings;
 	private IDialog dialog;
 	private UImanager uiManager;
@@ -43,9 +43,9 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
 			settingsData = new SettingsData();
         }
 		usedLanguage = settingsData.selected;
-		iSaveLoad = GetComponent<SaveLoad>();
-		iSaveLoad.Init(saveFile);
-		iSaveLoad.SetProfile(settingsData.profileName);
+		saveLoad = GetComponent<SaveLoad>();
+		saveLoad.Init(saveFile);
+		saveLoad.SetProfile(settingsData.profileName);
 
 		if (CLocalisation.Init())
 			CLocalisation.LoadLocalPrefab(localData[(int)usedLanguage]);
@@ -55,15 +55,15 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
 		uiManager.Init();
 
 		dialog = Instantiate(prefabDialogWindow, uiCanvas.transform).GetComponent<IDialog>();
-		saveLoad = Instantiate(prefabSaveLoadWindow, uiCanvas.transform).GetComponent<CSaveLoad>();
+		saveLoadWindow = Instantiate(prefabSaveLoadWindow, uiCanvas.transform).GetComponent<CSaveLoad>();
 		settings = Instantiate(prefabSettingsMenu, uiCanvas.transform).GetComponent<CSettings>();
 
 		AllServices.Container.Register<IDialog>(dialog);
-		AllServices.Container.Register<ISaveLoad>(iSaveLoad);
+		AllServices.Container.Register<ISaveLoad>(saveLoad);
 
 		mainMenu = Instantiate(prefabMainMenu, uiCanvas.transform).GetComponent<CUI>();
 
-		saveLoad.InittInterface();
+		saveLoadWindow.InittInterface();
 
 		GameObject vGameConsole = Instantiate(prefabGameConsole, uiCanvas.transform);
 		gameConsole = vGameConsole.GetComponent<CGameConsole>().GetIGameConsole();
@@ -101,7 +101,7 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
 	public void SaveSettings()
     {
 		SettingsData data = new SettingsData();
-		data.profileName = iSaveLoad.GetProfile();
+		data.profileName = saveLoad.GetProfile();
 		data.selected = usedLanguage;
 		saveFile.SaveSettings(data);
 		uiManager.CloseUI();
@@ -133,12 +133,12 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
 
 	public void Save()
 	{
-		saveLoad.OpenSaveWindow();
+		saveLoadWindow.OpenSaveWindow();
 	}
 
 	public void Load()
 	{
-		saveLoad.OpenLoadWindow();
+		saveLoadWindow.OpenLoadWindow();
 	}
 
 	public void OpenSettings()

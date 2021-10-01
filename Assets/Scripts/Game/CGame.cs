@@ -5,18 +5,27 @@ using UnityEngine;
 
 public class CGame : MonoBehaviour, IGame
 {
-    private IDialog dialog;
-    private IGameConsole gameConsole;
+    private IDialog dialog = null;
+    private IGameConsole gameConsole = null;
+    private IDungeon dungeon = null;
 
     private void Start()
     {
         dialog = AllServices.Container.Get<IDialog>();
         gameConsole = AllServices.Container.Get<IGameConsole>();
+        dungeon = AllServices.Container.Get<IDungeon>();
     }
 
     //--------------------------------------------------------------
     // IGame interface
     //--------------------------------------------------------------
+    public void CreateGame(SaveData _data)
+    {
+        dungeon = AllServices.Container.Get<IDungeon>();
+        if (dungeon == null) Debug.LogError("Dungeon interface not found!");
+        else dungeon.Create(_data);
+    }
+
     public SaveData GetData()
     {
         return CGameManager.GetData();
