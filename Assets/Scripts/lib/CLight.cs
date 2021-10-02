@@ -52,7 +52,7 @@ public class CLight : ConsoleService, ILight
     }
     private void OnDestroy()
     {
-        AllServices.Container.Register<ILight>(null);
+        AllServices.Container.UnRegister<ILight>();
     }
 
     private void OnConsole(string _str)

@@ -48,7 +48,7 @@ public class CCamera : MonoBehaviour, ICamera
 
     private void OnDestroy()
     {
-        AllServices.Container.Register<ICamera>(null);
+        AllServices.Container.UnRegister<ICamera>();
     }
 
     //--------------------------

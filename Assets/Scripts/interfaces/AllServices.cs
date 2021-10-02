@@ -10,6 +10,8 @@ public class AllServices
 
     public T Get<T>() where T : IService =>
       Implementation<T>.ServiceInstance;
+    public void UnRegister<T>() where T : IService =>
+      Implementation<T>.ServiceInstance = default;
 
     private static class Implementation<T> where T : IService
     {
