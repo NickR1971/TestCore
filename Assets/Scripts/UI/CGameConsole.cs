@@ -42,6 +42,7 @@ public class CGameConsole : MonoBehaviour, IGameConsole
     private GameObject[] msgList = new GameObject[maxMsgList];
     private SortedList<string, CGameConsoleCommand> commandsList = new SortedList<string, CGameConsoleCommand>();
     private IMainMenu mainMenu;
+    private IInputController inputController;
 
     private void Start()
     {
@@ -52,6 +53,7 @@ public class CGameConsole : MonoBehaviour, IGameConsole
         AddCommand(new CGameConsoleCommand("help", Help));
         AddCommand(new CGameConsoleCommand("quit", Quit,ELocalStringID.core_quit));
         mainMenu = AllServices.Container.Get<IMainMenu>();
+        inputController = AllServices.Container.Get<IInputController>();
     }
 
     private void OnDestroy()
@@ -136,7 +138,7 @@ public class CGameConsole : MonoBehaviour, IGameConsole
     {
         string sText = inputText.text;
 
-        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+        if (inputController.IsPressedEnter())
         {
             if (sText.Trim().Length > 0)
             {

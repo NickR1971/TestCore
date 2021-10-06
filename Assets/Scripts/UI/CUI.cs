@@ -3,10 +3,12 @@
 public class CUI : MonoBehaviour
 {
     protected IUI uiManager;
+    protected IInputController inputController;
  
     protected void InitUI()
     {
         uiManager = AllServices.Container.Get<IUI>();
+        inputController = AllServices.Container.Get<IInputController>();
     }
 
     public void Hide() => gameObject.SetActive(false);
@@ -24,12 +26,12 @@ public class CUI : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+        if (inputController.IsPressedEnter())
         {
             OnYes();
             return;
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (inputController.IsPressedEscape())
         {
             OnCancel();
             return;

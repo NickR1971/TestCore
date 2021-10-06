@@ -24,6 +24,7 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
 	private UImanager uiManager;
 	private IGameConsole gameConsole;
 	private IGame game;
+	private IInputController inputController;
 
 
     private void Awake()
@@ -35,6 +36,9 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
 
 		AllServices.Container.Register<IMainMenu>(this);
 		AllServices.Container.Register<IGame>(game);
+
+		inputController = GetComponent<IInputController>();
+		AllServices.Container.Register<IInputController>(inputController);
 
 		saveFile = new CSaveFile();
 		saveFile.LoadSettings(out settingsData);
