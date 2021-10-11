@@ -3,6 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public interface IGame : IService
+{
+    void CreateGame(SaveData _data);
+    SaveData GetData();
+    void OnSave();
+    void AddOnSaveAction(Action _a);
+    void RemoveOnSaveAction(Action _a);
+}
+
 public class CGame : MonoBehaviour, IGame
 {
     private IDialog dialog = null;
@@ -45,5 +54,4 @@ public class CGame : MonoBehaviour, IGame
     {
         CGameManager.onSave -= _a;
     }
-
 }

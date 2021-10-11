@@ -20,15 +20,14 @@ public class CCamera : MonoBehaviour, ICamera
     private void Awake()
     {
         AllServices.Container.Register<ICamera>(this);
-    }
-
-    private void Start()
-    {
         move = new CMove();
         view = new CMove();
         move.SetActionTime(changeTime);
         view.SetActionTime(changeTime);
+    }
 
+    private void Start()
+    {
         SetViewPointInstant(Vector3.zero);
     }
     private void LateUpdate()

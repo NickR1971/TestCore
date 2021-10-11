@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -665,6 +665,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dungeon
       objectReference: {fileID: 0}
+    - target: {fileID: 5339563647223236432, guid: c40c104f74b1e474a8fa1760ea0b8339,
+        type: 3}
+      propertyPath: CellPrefab
+      value: 
+      objectReference: {fileID: 4259370535318802679, guid: 9b8e94192db4cd1469b8bb42b1b9b16d,
+        type: 3}
+    - target: {fileID: 5339563647223236432, guid: c40c104f74b1e474a8fa1760ea0b8339,
+        type: 3}
+      propertyPath: cellPrefab
+      value: 
+      objectReference: {fileID: 4259370535318802679, guid: 9b8e94192db4cd1469b8bb42b1b9b16d,
+        type: 3}
+    - target: {fileID: 5339563647223236432, guid: c40c104f74b1e474a8fa1760ea0b8339,
+        type: 3}
+      propertyPath: FloorPrefab
+      value: 
+      objectReference: {fileID: 5663807943563785036, guid: e660bc45f8f7a18459229de689644de2,
+        type: 3}
+    - target: {fileID: 5339563647223236432, guid: c40c104f74b1e474a8fa1760ea0b8339,
+        type: 3}
+      propertyPath: floorPrefab
+      value: 
+      objectReference: {fileID: 5663807943563785036, guid: e660bc45f8f7a18459229de689644de2,
+        type: 3}
     - target: {fileID: 5598523408969742762, guid: c40c104f74b1e474a8fa1760ea0b8339,
         type: 3}
       propertyPath: m_RootOrder

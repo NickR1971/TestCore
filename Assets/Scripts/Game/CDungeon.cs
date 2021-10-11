@@ -9,6 +9,8 @@ public interface IDungeon : IService
 
 public class CDungeon : MonoBehaviour, IDungeon
 {
+    [SerializeField] private GameObject floorPrefab;
+    [SerializeField] private GameObject cellPrefab;
     private IDialog dialog = null;
     private IGameConsole gameConsole = null;
     private SaveData data = null;
@@ -29,6 +31,7 @@ public class CDungeon : MonoBehaviour, IDungeon
     private void BuildGame()
     {
         buildSequence = new CRand(data.id);
+        Instantiate(floorPrefab, transform).GetComponent<CRoom>().Init(this, cellPrefab);
     }
 
     //---------------------------------
