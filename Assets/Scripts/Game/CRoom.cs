@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,82 +7,43 @@ public class CRoom : MonoBehaviour
 {
     private IDungeon dungeon = null;
     private GameObject cellPrefab = null;
-    private const float x0 = -4.5f;
-    private const float y0 = 0.001f;
-    private const float z0 = 0;
+    private CellCoordsCalculator cellCalculator;
+    private Vector3 basePosition;
+    private int row = 5;
+    private int col = 5;
 
     private void Start()
     {
         if (dungeon == null) Debug.Log("Not init CRoom before start!");
         
-        BuildHex();
-        //BuildSquare();
+        transform.position = basePosition;
     }
-    private void BuildSquare()
+
+    private void OnCell(int _x,int _y, Vector3 _position)
     {
-        int i, j;
-        float x, y, z;
-        GameObject cell;
-        Vector3 cellPosition = new Vector3(0, 0, 0);
-
-        y = y0;
-        cellPosition.y = y;
-        for (i = 0; i < 10; i++)
-        {
-            cell = Instantiate(cellPrefab, transform);
-            x = (float)i + x0;
-            z = z0;
-            cellPosition.x = x;
-            cellPosition.z = z;
-            cell.transform.position = cellPosition;
-            for (j = 1; j <= 6; j++)
-            {
-                z = z0 + ((float)j);
-                cell = Instantiate(cellPrefab, transform);
-                cellPosition.z = z;
-                cell.transform.position = cellPosition;
-                cell = Instantiate(cellPrefab, transform);
-                z = z0 - ((float)j);
-                cellPosition.z = z;
-                cell.transform.position = cellPosition;
-            }
-        }
+        Instantiate(cellPrefab, transform).transform.position = _position;
     }
-
-    private void BuildHex()
-    {
-        int i, j;
-        float x, y, z;
-        GameObject cell;
-        Vector3 cellPosition = new Vector3(0, 0, 0);
-
-        y = y0;
-        cellPosition.y = y;
-        for (i = 0; i < 10; i++)
-        {
-            cell = Instantiate(cellPrefab, transform);
-            x = (float)i + x0;
-            z = z0;
-            cellPosition.x = x;
-            cellPosition.z = z;
-            cell.transform.position = cellPosition;
-            for (j = 1; j <= 7; j++)
-            {
-                z = z0 + ((float)j) * 0.866f;
-                cell = Instantiate(cellPrefab, transform);
-                cellPosition.x = x + ((j % 2) != 0 ? 0.5f : 0.0f);
-                cellPosition.z = z;
-                cell.transform.position = cellPosition;
-                cell = Instantiate(cellPrefab, transform);
-                z = z0 - ((float)j) * 0.866f;
-                cellPosition.z = z;
-                cell.transform.position = cellPosition;
-            }
-        }
-    }
-    public void Init(IDungeon _dungeon, GameObject _cellPrefab)
+    public CRoom Init(IDungeon _dungeon, GameObject _cellPrefab, CellCoordsCalculator _cellCalculator)
     {
         dungeon = _dungeon;
         cellPrefab = _cellPrefab;
+        basePosition = Vector3.zero;
+        cellCalculator = _cellCalculator;
+        cellCalculator.SetOnCellAction(OnCell);
+        
+        return this;
+    }
+
+    public CRoom SetBasePosition(int _col, int _row)
+    {
+        row = _row; col = _col;
+        basePosition = new Vector3((float)(_col - 5) * 10.0f, 0, (float)(_row - 5) * 13.0f);
+
+        return this;
+    }
+
+    public void Build()
+    {
+        cellCalculator.Build(row, col);
     }
 }

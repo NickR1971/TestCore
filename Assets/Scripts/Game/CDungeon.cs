@@ -15,10 +15,13 @@ public class CDungeon : MonoBehaviour, IDungeon
     private IGameConsole gameConsole = null;
     private SaveData data = null;
     private CRand buildSequence;
+    private CellCoordsCalculator cellCalculator;
 
     private void Awake()
     {
         AllServices.Container.Register<IDungeon>(this);
+        cellCalculator = new CellHexCalculator();
+        //cellCalculator = new CellSquareCalculator();
     }
 
     private void Start()
@@ -31,13 +34,27 @@ public class CDungeon : MonoBehaviour, IDungeon
     private void BuildGame()
     {
         buildSequence = new CRand(data.id);
-        Instantiate(floorPrefab, transform).GetComponent<CRoom>().Init(this, cellPrefab);
+        Instantiate(floorPrefab, transform).GetComponent<CRoom>()
+            .Init(this, cellPrefab, cellCalculator)
+            .Build();
+        Instantiate(floorPrefab, transform).GetComponent<CRoom>()
+            .Init(this, cellPrefab, cellCalculator)
+            .SetBasePosition(5, 6)
+            .Build();
+        Instantiate(floorPrefab, transform).GetComponent<CRoom>()
+            .Init(this, cellPrefab, cellCalculator)
+            .SetBasePosition(6,5)
+            .Build();
+        Instantiate(floorPrefab, transform).GetComponent<CRoom>()
+            .Init(this, cellPrefab, cellCalculator)
+            .SetBasePosition(6,6)
+            .Build();
     }
 
     //---------------------------------
     // IDungeon
-     //---------------------------------
-   public void Create(SaveData _data)
+    //---------------------------------
+    public void Create(SaveData _data)
     {
         data = _data;
         if (dialog != null) BuildGame();

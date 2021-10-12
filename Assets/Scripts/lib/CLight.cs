@@ -34,7 +34,7 @@ public class CLight : ConsoleService, ILight
     private void Start()
     {
         Init();
-        AddCommand("light", OnConsole,"light morning | noon | evening");
+        AddCommand("light", OnConsole,"light morning | noon | evening | zenit");
         mLight = GetComponent<Light>();
         move = new CMove();
         move.SetActionTime(changeTime);
@@ -61,6 +61,7 @@ public class CLight : ConsoleService, ILight
         if (_str == "morning") MoveTo(LightPosition.morning);
         if (_str == "noon") MoveTo(LightPosition.noon);
         if (_str == "evening") MoveTo(LightPosition.evening);
+        if (_str == "zenit") MoveTo(LightPosition.zenit);
     }
 
     //----------------------------------------------------------
