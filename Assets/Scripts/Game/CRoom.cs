@@ -19,9 +19,9 @@ public class CRoom : MonoBehaviour
         transform.position = basePosition;
     }
 
-    private void OnCell(int _x,int _y, Vector3 _position)
+    private void OnCell(Cell _cell)
     {
-        Instantiate(cellPrefab, transform).transform.position = _position;
+        Instantiate(cellPrefab, transform).transform.position = _cell.GetPosition();
     }
     public CRoom Init(IDungeon _dungeon, GameObject _cellPrefab, CellCoordsCalculator _cellCalculator)
     {

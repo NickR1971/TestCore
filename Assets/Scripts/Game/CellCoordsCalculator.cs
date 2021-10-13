@@ -3,12 +3,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ECellType
+{
+    none, ground, stone, water, ice, wood
+}
 
+public class Cell
+{
+    private readonly Vector3 position;
+    private readonly int number;
+    private ECellType baseType;
+
+    public Cell(Vector3 _position, int _number)
+    {
+        position = _position;
+        number = _number;
+        baseType = ECellType.none;
+    }
+
+    public void SetBaseType(ECellType _type) => baseType = _type;
+    public ECellType GetBaseType() => baseType;
+    public Vector3 GetPosition() => position;
+}
 public abstract class CellCoordsCalculator
 {
-    protected Action<int, int, Vector3> onCell;
+    private Action<Cell> onCell;
+    private int startCellInRoom = 0;
+
     protected int width = 10;
     protected int height = 10;
+    protected int mapWidth = 10;
+    protected int mapHeight = 10;
     protected const float x0 = -4.5f;
     protected const float y0 = 0.001f;
     protected const float z0 = 0;
@@ -16,11 +41,23 @@ public abstract class CellCoordsCalculator
     public int GetWidth() => width;
     public int GetHeight() => height;
 
-    public void SetOnCellAction(Action<int, int, Vector3> _onCell)
+    public void SetOnCellAction(Action<Cell> _onCell)
     {
         onCell = _onCell;
     }
+    protected void CreateCell(int _x, int _y, Vector3 _position)
+    {
+        int cellNumber = startCellInRoom + _y * mapWidth * width + _x;
+        Cell cell = new Cell(_position, cellNumber);
+        onCell(cell);
+    }
 
+    protected void SetStartCell(int _roomRow, int _roomCol)
+    {
+        if (_roomRow > mapHeight) Debug.LogError("room row above height!");
+        if (_roomCol > mapWidth) Debug.LogError("room col above width!");
+        startCellInRoom = _roomRow * mapWidth * width + _roomCol*width;
+    }
     public abstract void Build(int _roomRow, int _roomCol);
 }
 
@@ -38,32 +75,27 @@ public class CellSquareCalculator : CellCoordsCalculator
         int cellX, cellY;
         float x, y, z;
         Vector3 cellPosition = new Vector3(0, 0, 0);
+        SetStartCell(_roomRow, _roomCol);
 
         y = y0;
         cellPosition.y = y;
         cellY = height / 2;
         for (i = 0; i < width; i++)
         {
-            //cell = Instantiate(cellPrefab, transform);
             cellX = i;
             x = (float)i + x0;
             z = z0;
             cellPosition.x = x;
             cellPosition.z = z;
-            //cell.transform.position = cellPosition;
-            onCell(cellX, cellY, cellPosition);
+            CreateCell(cellX, cellY, cellPosition);
             for (j = 1; j <= cellY; j++)
             {
-                //cell = Instantiate(cellPrefab, transform);
                 z = z0 + ((float)j);
                 cellPosition.z = z;
-                //cell.transform.position = cellPosition;
-                onCell(cellX, cellY+j, cellPosition);
-                //cell = Instantiate(cellPrefab, transform);
+                CreateCell(cellX, cellY+j, cellPosition);
                 z = z0 - ((float)j);
                 cellPosition.z = z;
-                //cell.transform.position = cellPosition;
-                onCell(cellX, cellY-j, cellPosition);
+                CreateCell(cellX, cellY-j, cellPosition);
             }
         }
     }
@@ -82,6 +114,7 @@ public class CellHexCalculator : CellCoordsCalculator
         int cellX, cellY;
         float x, y, z;
         Vector3 cellPosition = new Vector3(0, 0, 0);
+        SetStartCell(_roomRow, _roomCol);
 
         y = y0;
         cellPosition.y = y;
@@ -90,29 +123,23 @@ public class CellHexCalculator : CellCoordsCalculator
         {
             cellX = i;
             j = 0;
-            //cell = Instantiate(cellPrefab, transform);
             x = (float)i + x0;
             z = z0;
             cellPosition.x = x + ((j % 2) != (_roomRow % 2) ? 0.5f : 0.0f);
             cellPosition.z = z;
-            //cell.transform.position = cellPosition;
-            onCell(cellX, cellY, cellPosition);
+            CreateCell(cellX, cellY, cellPosition);
 
             for (j = 1; j <= cellY; j++)
             {
                 cellPosition.x = x + ((j % 2) != (_roomRow % 2) ? 0.5f : 0.0f);
 
-                //cell = Instantiate(cellPrefab, transform);
                 z = z0 + ((float)j) * 0.866f;
                 cellPosition.z = z;
-                //cell.transform.position = cellPosition;
-                onCell(cellX, cellY + j, cellPosition);
+                CreateCell(cellX, cellY + j, cellPosition);
 
-                //cell = Instantiate(cellPrefab, transform);
                 z = z0 - ((float)j) * 0.866f;
                 cellPosition.z = z;
-                //cell.transform.position = cellPosition;
-                onCell(cellX, cellY - j, cellPosition);
+                CreateCell(cellX, cellY - j, cellPosition);
             }
         }
     }
