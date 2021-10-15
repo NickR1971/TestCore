@@ -5,6 +5,7 @@ using UnityEngine;
 public interface IDungeon : IService
 {
     void Create(SaveData _data);
+    int GetSequenceNumber(uint _max);
 }
 
 public class CDungeon : MonoBehaviour, IDungeon
@@ -22,6 +23,8 @@ public class CDungeon : MonoBehaviour, IDungeon
         AllServices.Container.Register<IDungeon>(this);
         cellCalculator = new CellHexCalculator();
         //cellCalculator = new CellSquareCalculator();
+
+        cellCalculator.CreateMap(10, 10);
     }
 
     private void Start()
@@ -58,5 +61,15 @@ public class CDungeon : MonoBehaviour, IDungeon
     {
         data = _data;
         if (dialog != null) BuildGame();
+    }
+
+    public int GetSequenceNumber(uint _max)
+    {
+        if (buildSequence == null)
+        {
+            Debug.LogError("Build sequence not initialized!");
+            return 0;
+        }
+        return (int)buildSequence.Dice(_max);
     }
 }

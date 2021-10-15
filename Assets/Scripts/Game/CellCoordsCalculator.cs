@@ -5,7 +5,7 @@ using UnityEngine;
 
 public enum ECellType
 {
-    none, ground, stone, water, ice, wood
+    none=0, ground=1, stone=2, water=3, ice=4, wood=5
 }
 
 public class Cell
@@ -29,6 +29,7 @@ public abstract class CellCoordsCalculator
 {
     private Action<Cell> onCell;
     private int startCellInRoom = 0;
+    private Cell[] map;
 
     protected int width = 10;
     protected int height = 10;
@@ -45,10 +46,19 @@ public abstract class CellCoordsCalculator
     {
         onCell = _onCell;
     }
+
+    public void CreateMap(int _mapWidth, int _mapHeight)
+    {
+        mapHeight = _mapHeight;
+        mapWidth = _mapWidth;
+        map = new Cell[mapHeight * mapWidth * width * height];
+    }
+
     protected void CreateCell(int _x, int _y, Vector3 _position)
     {
         int cellNumber = startCellInRoom + _y * mapWidth * width + _x;
         Cell cell = new Cell(_position, cellNumber);
+        map[cellNumber] = cell;
         onCell(cell);
     }
 
