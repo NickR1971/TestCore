@@ -40,18 +40,22 @@ public class CDungeon : MonoBehaviour, IDungeon
         buildSequence = new CRand(data.id);
         Instantiate(floorPrefab, transform).GetComponent<CRoom>()
             .Init(this, cellPrefab, cellCalculator)
+            .SetBasePosition(5, 5)
             .Build();
         Instantiate(floorPrefab, transform).GetComponent<CRoom>()
             .Init(this, cellPrefab, cellCalculator)
             .SetBasePosition(5, 6)
+            .SetColor(Color.green)
             .Build();
         Instantiate(floorPrefab, transform).GetComponent<CRoom>()
             .Init(this, cellPrefab, cellCalculator)
             .SetBasePosition(6,5)
+            .SetColor(Color.red)
             .Build();
         Instantiate(floorPrefab, transform).GetComponent<CRoom>()
             .Init(this, cellPrefab, cellCalculator)
             .SetBasePosition(6,6)
+            .SetColor(Color.blue)
             .Build();
     }
 

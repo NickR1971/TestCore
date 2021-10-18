@@ -32,7 +32,7 @@ public class Cell
 
     public void SetBaseType(ECellType _type) => baseType = _type;
     public ECellType GetBaseType() => baseType;
-    public Vector3 GetPosition() => position;
+    public Vector3 GetPosition() => position + room.GetPosition();
     public int GetNearNumber(EMapDirection _direction) => nearList[(int)_direction];
     public void AddRoom(CRoom _room) => room = _room;
     public CRoom GetRoom() => room;
@@ -99,7 +99,12 @@ public abstract class CellCoordsCalculator : IGameMap
     public int GetRoomHeight() => height;
     public int GetWidth() => width * mapWidth;
     public int GetHeight() => height * mapHeight;
-    public Cell GetCell(int _number) => map[_number];
+    public Cell GetCell(int _number)
+    {
+        if (_number >= map.Length) return null;
+
+        return map[_number];
+    }
 
     public void SetOnCellAction(Action<Cell> _onCell)
     {
@@ -132,7 +137,8 @@ public abstract class CellCoordsCalculator : IGameMap
     {
         if (_roomRow > mapHeight) Debug.LogError("room row above height!");
         if (_roomCol > mapWidth) Debug.LogError("room col above width!");
-        startCellInRoom = _roomRow * mapWidth * width + _roomCol*width;
+        startCellInRoom = _roomRow * mapWidth * width * height + _roomCol * width;
+        Debug.Log($"Row={_roomRow} Col={_roomCol} : Start number is {startCellInRoom}");
     }
     public abstract void Build(int _roomRow, int _roomCol);
 }
@@ -188,7 +194,7 @@ public class CellHexCalculator : CellCoordsCalculator
     private void CorrectNearList(float _offset)
     {
         int n;
-        if (_offset > 0.1f)
+        if (_offset < 0.1f)
         {
             n = (int)EMapDirection.northeast;
             xList[n] = 0;
