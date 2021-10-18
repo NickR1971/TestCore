@@ -14,6 +14,6 @@ public class CBattle : CUI
         game = AllServices.Container.Get<IGame>();
         game.CreateGame(game.GetData());
         myCamera = AllServices.Container.Get<ICamera>();
-        myCamera.SetPosition(new Vector3(0, 5, -7));
+        myCamera.SetPosition(new Vector3(-2, 5, -7));
     }
 }

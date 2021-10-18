@@ -6,6 +6,7 @@ public interface IDungeon : IService
 {
     void Create(SaveData _data);
     int GetSequenceNumber(uint _max);
+    IGameMap GetGameMap();
 }
 
 public class CDungeon : MonoBehaviour, IDungeon
@@ -71,5 +72,10 @@ public class CDungeon : MonoBehaviour, IDungeon
             return 0;
         }
         return (int)buildSequence.Dice(_max);
+    }
+
+    public IGameMap GetGameMap()
+    {
+        return cellCalculator;
     }
 }
