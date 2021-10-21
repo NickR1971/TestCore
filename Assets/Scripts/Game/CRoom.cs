@@ -23,10 +23,10 @@ public class CRoom : MonoBehaviour
     private void OnCell(Cell _cell)
     {
         _cell.AddRoom(this);
-        //Instantiate(cellPrefab, transform).transform.position = _cell.GetPosition();
         _cell.SetObject(Instantiate(cellPrefab, transform));
         _cell.SetColor(color);
     }
+
     public CRoom Init(IDungeon _dungeon, GameObject _cellPrefab, CellCoordsCalculator _cellCalculator)
     {
         dungeon = _dungeon;
@@ -38,7 +38,7 @@ public class CRoom : MonoBehaviour
         return this;
     }
 
-    public CRoom SetColor(Color _color)
+    public CRoom SetDefaultColor(Color _color)
     {
         color = _color;
         return this;
