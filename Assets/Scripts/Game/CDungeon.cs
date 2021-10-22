@@ -104,7 +104,7 @@ public class CDungeon : MonoBehaviour, IDungeon
 
             if (n == 0) return _number;
             if (n == 1) dir = dirFree[0];
-            else dir = dirFree[GetSequenceNumber((uint)n)-1];
+            else dir = dirFree[GetSequenceNumber((uint)n)];
             x = _x; y = _y;
             switch (dir)
             {
@@ -150,7 +150,7 @@ public class CDungeon : MonoBehaviour, IDungeon
             Debug.LogError("Build sequence not initialized!");
             return 0;
         }
-        return (int)buildSequence.Dice(_max);
+        return (int)buildSequence.Dice(_max)-1;
     }
 
     public IGameMap GetGameMap()

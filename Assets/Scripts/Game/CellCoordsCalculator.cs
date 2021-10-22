@@ -3,11 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ECellType
-{
-    none=0, ground=1, stone=2, water=3, ice=4, wood=5
-}
-
 public enum EMapDirection
 {
     center=0, north=1, northeast=2, east=3, southeast=4, south=5, southwest=6, west=7, northwest=8
@@ -123,14 +118,59 @@ public abstract class CellCoordsCalculator : IGameMap
         return startCellInRoom + _y * mapWidth * width + _x;
     }
 
+    private Color GetSurfaceColor(ECellType _surfaceType)
+    {
+        switch(_surfaceType)
+        {
+            case ECellType.ground:
+                return Color.green;
+            case ECellType.stone:
+                return Color.gray;
+            case ECellType.water:
+                return Color.blue;
+            default:
+                return Color.white;
+        }
+    }
+    private bool CheckSurface(Vector3 _position, out Vector3 _result, out ECellType _surfaceType)
+    {
+        Vector3 start;
+        Vector3 dir = new Vector3(0, -1, 0);
+        RaycastHit hit;
+
+        _result = _position;
+        _surfaceType = ECellType.none;
+
+        start = _position;
+        start.y = 50.0f;
+        if (Physics.Raycast(start, dir, out hit, 100.0f))
+        {
+            _result = hit.point;
+            _result.y += y0; // -------------------------- ??
+            GameObject obj = hit.collider.gameObject;
+            ISurface surface = obj.GetComponent<ISurface>();
+            if (surface != null) _surfaceType = surface.GetCellType();
+        }
+        else return false;
+
+        return true;
+    }
     protected void CreateCell(int _x, int _y, Vector3 _position)
     {
         int cellNumber = CalcNum(_x, _y);
         int[] nearList = new int[9];
         for (int i = 0; i < 9; i++) nearList[i] = CalcNum(_x + xList[i], _y + yList[i]);
-        Cell cell = new Cell(_position, cellNumber, nearList);
-        map[cellNumber] = cell;
-        onCell(cell);
+
+        Vector3 position;
+        ECellType surfaceType;
+        if (CheckSurface(_position, out position, out surfaceType))
+        {
+            Cell cell = new Cell(_position, cellNumber, nearList);
+            map[cellNumber] = cell;
+            cell.SetBaseType(surfaceType);
+            onCell(cell);
+            cell.SetColor(GetSurfaceColor(surfaceType));
+        }
     }
 
     protected void SetStartCell(int _roomRow, int _roomCol)

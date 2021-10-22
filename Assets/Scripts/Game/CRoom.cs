@@ -9,7 +9,6 @@ public class CRoom : MonoBehaviour
     private GameObject cellPrefab = null;
     private CellCoordsCalculator cellCalculator;
     private Vector3 basePosition;
-    private Color color = Color.white;
     private int row = 5;
     private int col = 5;
 
@@ -24,7 +23,6 @@ public class CRoom : MonoBehaviour
     {
         _cell.AddRoom(this);
         _cell.SetObject(Instantiate(cellPrefab, transform));
-        _cell.SetColor(color);
     }
 
     public CRoom Init(IDungeon _dungeon, GameObject _cellPrefab, CellCoordsCalculator _cellCalculator)
@@ -35,12 +33,6 @@ public class CRoom : MonoBehaviour
         cellCalculator = _cellCalculator;
         cellCalculator.SetOnCellAction(OnCell);
         
-        return this;
-    }
-
-    public CRoom SetDefaultColor(Color _color)
-    {
-        color = _color;
         return this;
     }
 
