@@ -40,7 +40,8 @@ public class Cell
 
     public void SetColor(Color _color)
     {
-        obj.GetComponent<Renderer>().material.color = _color;
+        if (obj == null) Debug.LogError("Cell mark not instantiated!");
+        else obj.GetComponent<Renderer>().material.color = _color;
     }
 }
 
@@ -63,7 +64,7 @@ public abstract class CellCoordsCalculator : IGameMap
     protected int mapWidth = 10;
     protected int mapHeight = 10;
     protected const float x0 = -4.5f;
-    protected const float y0 = 0.001f;
+    protected const float y0 = 0.0001f;
     protected const float z0 = 0;
     protected int[] xList = new int[9];
     protected int[] yList = new int[9];
@@ -135,7 +136,6 @@ public abstract class CellCoordsCalculator : IGameMap
     private bool CheckSurface(Vector3 _position, out Vector3 _result, out ECellType _surfaceType)
     {
         Vector3 start;
-        Vector3 dir = new Vector3(0, -1, 0);
         RaycastHit hit;
 
         _result = _position;
@@ -143,10 +143,10 @@ public abstract class CellCoordsCalculator : IGameMap
 
         start = _position;
         start.y = 50.0f;
-        if (Physics.Raycast(start, dir, out hit, 100.0f))
+        if (Physics.Raycast(start, Vector3.down, out hit, 100.0f))
         {
             _result = hit.point;
-            _result.y += y0; // -------------------------- ??
+            _result.y += y0;
             GameObject obj = hit.collider.gameObject;
             ISurface surface = obj.GetComponent<ISurface>();
             if (surface != null) _surfaceType = surface.GetCellType();
@@ -165,7 +165,7 @@ public abstract class CellCoordsCalculator : IGameMap
         ECellType surfaceType;
         if (CheckSurface(_position, out position, out surfaceType))
         {
-            Cell cell = new Cell(_position, cellNumber, nearList);
+            Cell cell = new Cell(position, cellNumber, nearList);
             map[cellNumber] = cell;
             cell.SetBaseType(surfaceType);
             onCell(cell);
