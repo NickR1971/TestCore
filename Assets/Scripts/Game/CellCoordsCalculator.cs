@@ -3,11 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EMapDirection
-{
-    center=0, north=1, northeast=2, east=3, southeast=4, south=5, southwest=6, west=7, northwest=8
-}
-
 public class Cell
 {
     private readonly Vector3 position;
