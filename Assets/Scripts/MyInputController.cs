@@ -17,6 +17,7 @@ public enum MyButton
 public interface IInputController : IService
 {
     bool IsPressed(MyButton _code);
+    bool IsPressed(Key _key);
     void GetLeftStick(out float _horizontal, out float _vertical);
     void GetRightStick(out float _horizontal, out float _vertical);
     bool IsPressedEnter();
@@ -27,7 +28,7 @@ public class MyInputController : MonoBehaviour, IInputController
 {
     private Gamepad gamepad;
     private Keyboard keyboard;
-    private GamepadButton[] buttons = 
+    private readonly GamepadButton[] buttons = 
     {
         GamepadButton.DpadUp, GamepadButton.DpadDown, GamepadButton.DpadLeft, GamepadButton.DpadRight,
         GamepadButton.Y, GamepadButton.A, GamepadButton.B, GamepadButton.X,
@@ -37,7 +38,7 @@ public class MyInputController : MonoBehaviour, IInputController
         GamepadButton.Select, GamepadButton.Start
     };
 
-    private Key[] keys =
+    private readonly Key[] keys =
     {
         Key.UpArrow, Key.DownArrow, Key.LeftArrow, Key.RightArrow,
         Key.Backquote, Key.Enter, Key.Escape, Key.Backslash,
@@ -75,6 +76,7 @@ public class MyInputController : MonoBehaviour, IInputController
         }
         return false;
     }
+    public bool IsPressed(Key _key) => keyboard[_key].wasPressedThisFrame;
 
     public void GetLeftStick(out float _horizontal, out float _vertical)
     {

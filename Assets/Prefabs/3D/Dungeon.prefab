@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5598523408969742762}
   - component: {fileID: 5339563647223236432}
+  - component: {fileID: 968467447908062636}
   m_Layer: 0
   m_Name: Dungeon
   m_TagString: Untagged
@@ -41,5 +42,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3d4c6324a971661498732c99cd8b4408, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  floorPrefab: {fileID: 4924980328438315088, guid: 07dcebe9aff851340bf844f32d9877c3,
+    type: 3}
+  cellPrefab: {fileID: 4259370535318802679, guid: 9b8e94192db4cd1469b8bb42b1b9b16d,
+    type: 3}
+--- !u!114 &968467447908062636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3460202342154811746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f9a3eb4261d5f34e887a2736bdba0ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

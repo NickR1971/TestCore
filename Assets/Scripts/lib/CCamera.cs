@@ -25,7 +25,7 @@ public class CCamera : MonoBehaviour, ICamera
     private Vector3 viewpoint;
     private Vector3[] positionList;
     private Vector3 currentPosition;
-    private float height = 10.0f;
+    private float height = 5.0f;
     private float distance = 5.0f;
 
     private void InitPositions()
@@ -37,7 +37,7 @@ public class CCamera : MonoBehaviour, ICamera
         positionList[4] = new Vector3(distance * 0.7071f, height, -distance * 0.7071f); // southeast
         positionList[5] = new Vector3(0, height, -distance); // south
         positionList[6] = new Vector3(-distance * 0.7071f, height, -distance * 0.7071f); // southwest
-        positionList[7] = new Vector3(distance, height, 0); // west
+        positionList[7] = new Vector3(-distance, height, 0); // west
         positionList[8] = new Vector3(-distance * 0.7071f, height, distance * 0.7071f); // northwest
     }
 

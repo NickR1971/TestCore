@@ -35,7 +35,7 @@ public class Cell
 
     public void SetColor(Color _color)
     {
-        if (obj == null) Debug.LogError("Cell mark not instantiated!");
+        if (obj == null) Debug.Log($"Cell #{number} mark not instantiated!");
         else obj.GetComponent<Renderer>().material.color = _color;
     }
 }
@@ -131,24 +131,23 @@ public abstract class CellCoordsCalculator : IGameMap
     private bool CheckSurface(Vector3 _position, out Vector3 _result, out ECellType _surfaceType)
     {
         Vector3 start;
-        RaycastHit hit;
 
         _result = _position;
         _surfaceType = ECellType.none;
 
         start = _position;
         start.y = 50.0f;
-        if (Physics.Raycast(start, Vector3.down, out hit, 100.0f))
+        if (Physics.Raycast(start, Vector3.down, out RaycastHit hit, 100.0f))
         {
             _result = hit.point;
             _result.y += y0;
             GameObject obj = hit.collider.gameObject;
             ISurface surface = obj.GetComponent<ISurface>();
             if (surface != null) _surfaceType = surface.GetCellType();
+            return true;
         }
-        else return false;
-
-        return true;
+        else Debug.Log($"not found cell at {_position}");
+        return false;
     }
     protected void CreateCell(int _x, int _y, Vector3 _position)
     {

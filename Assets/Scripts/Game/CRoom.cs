@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ERoomSide { free, wall, door, passage };
+
 public class CRoom : MonoBehaviour
 {
     private IDungeon dungeon = null;
@@ -11,6 +13,12 @@ public class CRoom : MonoBehaviour
     private Vector3 basePosition;
     private int row = 5;
     private int col = 5;
+    private const float roomSizeX = 10.0f;
+    private const float roomSizeZ = 13.0f;
+    private ERoomSide sideNorth;
+    private ERoomSide sideSouth;
+    private ERoomSide sideEast;
+    private ERoomSide sideWest;
 
     private void Start()
     {
@@ -39,7 +47,7 @@ public class CRoom : MonoBehaviour
     public CRoom SetBasePosition(int _col, int _row)
     {
         row = _row; col = _col;
-        basePosition = new Vector3((float)(_col - 5) * 10.0f, 0, (float)(_row - 5) * 13.0f);
+        basePosition = new Vector3((float)(_col - 5) * roomSizeX, 0, (float)(_row - 5) * roomSizeZ);
 
         return this;
     }
