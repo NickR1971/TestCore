@@ -14,7 +14,7 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
 	[SerializeField] private GameObject prefabDialogWindow;
     [SerializeField] private GameObject prefabSaveLoadWindow;
 	[SerializeField] private GameObject prefabGameConsole;
-	[SerializeField] private GameObject[] localData=new GameObject[2];
+	private ILocalization localization;
 	private CUI mainMenu;
 	private CSaveFile saveFile;
     private CSaveLoad saveLoadWindow;
@@ -51,9 +51,6 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
 		saveLoad.Init(saveFile);
 		saveLoad.SetProfile(settingsData.profileName);
 
-		if (CLocalisation.Init())
-			CLocalisation.LoadLocalPrefab(localData[(int)usedLanguage]);
-
 		uiManager = new UImanager();
 		AllServices.Container.Register<IUI>(uiManager);
 		uiManager.Init();
@@ -82,6 +79,8 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
 
     private void Start()
     {
+		localization = AllServices.Container.Get<ILocalization>();
+		localization.LoadLanguage(usedLanguage);
 		uiManager.OpenUI(mainMenu);
 		uiManager.OpenUI(uiStart);
 	}
@@ -93,8 +92,7 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
 
 	public void SetLanguage(UsedLocal _language)
     {
-		usedLanguage = _language;
-		CLocalisation.LoadLocalPrefab(localData[(int)_language]);
+		localization.LoadLanguage(usedLanguage = _language);
     }
 
 	public void OpenStartUI()
@@ -152,7 +150,7 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
 
 	public void Quit()
     {
-		dialog.OpenDialog(EDialog.Question, CLocalisation.GetString(ELocalStringID.core_quit) + "\n" + CLocalisation.GetString(ELocalStringID.msg_areYouSure), OnQuit);
+		dialog.OpenDialog(EDialog.Question, localization.GetString(ELocalStringID.core_quit) + "\n" + localization.GetString(ELocalStringID.msg_areYouSure), OnQuit);
 	}
 
 	private void OnQuit () 

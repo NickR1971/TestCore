@@ -13,7 +13,8 @@ public class CMenu : CUI
 
     private void OnDestroy()
     {
-        CLocalisation.reloadText -= RefreshText;
+        if (localization == null) Debug.Log("Localization service not found!");
+        else localization.RemoveOnChange(RefreshText);
     }
 
     protected void InitMenu()
@@ -21,14 +22,14 @@ public class CMenu : CUI
         InitUI();
         iMainMenu = AllServices.Container.Get<IMainMenu>();
         lastButton = null;
-        CLocalisation.reloadText += RefreshText;
+        localization.SetOnChange(RefreshText);
     }
 
     public int GetNumButtons() => buttons.Count;
 
     private void SetLastButtonText(ELocalStringID _id)
     {
-        lastButton.transform.GetChild(0).GetComponent<Text>().text = CLocalisation.GetString(_id);
+        lastButton.transform.GetChild(0).GetComponent<Text>().text = localization.GetString(_id);
     }
 
     protected Button AddButton(ELocalStringID _id)

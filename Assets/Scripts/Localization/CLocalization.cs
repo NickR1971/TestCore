@@ -5,7 +5,7 @@ using UnityEngine;
 
 public enum UsedLocal { english = 0, ukrainian = 1 }
 
-public static class CLocalisation
+public static class CLocalization
 {
     public static event Action reloadText;
 

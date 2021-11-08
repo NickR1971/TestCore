@@ -4,11 +4,13 @@ public class CUI : MonoBehaviour
 {
     protected IUI uiManager;
     protected IInputController inputController;
+    protected ILocalization localization;
  
     protected void InitUI()
     {
         uiManager = AllServices.Container.Get<IUI>();
         inputController = AllServices.Container.Get<IInputController>();
+        localization = AllServices.Container.Get<ILocalization>();
     }
 
     public void Hide() => gameObject.SetActive(false);

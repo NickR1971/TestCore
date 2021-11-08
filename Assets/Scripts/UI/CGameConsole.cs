@@ -10,6 +10,7 @@ public class CGameConsoleCommand
     public string strHint;
     public Action<string> action;
 
+
     public CGameConsoleCommand()
     {
         command = "none";
@@ -18,8 +19,9 @@ public class CGameConsoleCommand
     }
     public CGameConsoleCommand(string _cmd, Action<string> _act=null, ELocalStringID _hint=ELocalStringID.core_empty)
     {
+        ILocalization localization = AllServices.Container.Get<ILocalization>();
         command = _cmd;
-        strHint = CLocalisation.GetString(_hint);
+        strHint = localization.GetString(_hint);
         action = _act;
     }
 
@@ -37,6 +39,7 @@ public class CGameConsole : MonoBehaviour, IGameConsole
     [SerializeField] private Transform containerTransform;
     [SerializeField] private GameObject consoleString;
     [SerializeField] private Scrollbar scroll;
+    private ILocalization localization;
     private const int maxMsgList = 50;
     private int currentMsg = 0;
     private GameObject[] msgList = new GameObject[maxMsgList];
@@ -46,6 +49,8 @@ public class CGameConsole : MonoBehaviour, IGameConsole
 
     private void Start()
     {
+        localization = AllServices.Container.Get<ILocalization>();
+
         for (int i = 0; i < maxMsgList; i++)
         {
             msgList[i] = Instantiate(consoleString, containerTransform);
@@ -131,7 +136,7 @@ public class CGameConsole : MonoBehaviour, IGameConsole
         {
             gcCommand.action?.Invoke(_cmd.Substring(gcCommand.command.Length).Trim());
         }
-        else ShowMessage(CLocalisation.GetString(ELocalStringID.err_noCommnand) + " [" + _cmd + "]");
+        else ShowMessage(localization.GetString(ELocalStringID.err_noCommnand) + " [" + _cmd + "]");
     }
 
     public void OnTextEnter()

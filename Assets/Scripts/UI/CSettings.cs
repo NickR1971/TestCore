@@ -58,8 +58,7 @@ public class CSettings : CUI
 
     private void ErrorMessage(ELocalStringID _strID)
     {
-        //IDialog dlg = ApplicationManager.GetDialogManager();
-        dialog.OpenDialog(EDialog.Error, CLocalisation.GetString(_strID));
+        dialog.OpenDialog(EDialog.Error, localization.GetString(_strID));
     }
 
     public override void OnYes()

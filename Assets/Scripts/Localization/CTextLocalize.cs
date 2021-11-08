@@ -7,21 +7,23 @@ public class CTextLocalize : MonoBehaviour
 {
     private Text textField;
     [SerializeField] public string strID;
+    private ILocalization localization;
 
     private void Start()
     {
+        localization = AllServices.Container.Get<ILocalization>();
         textField = GetComponent<Text>();
         RefreshText();
-        CLocalisation.reloadText += RefreshText;
+        localization.SetOnChange(RefreshText);
     }
 
     private void OnDestroy()
     {
-        CLocalisation.reloadText -= RefreshText;
+        localization.RemoveOnChange(RefreshText);
     }
 
     public void RefreshText()
     {
-        textField.text = CLocalisation.GetString(strID);
+        textField.text = localization.GetString(strID);
     }
 }
