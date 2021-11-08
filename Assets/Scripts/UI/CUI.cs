@@ -17,7 +17,7 @@ public class CUI : MonoBehaviour
     public void Show() => gameObject.SetActive(true);
     public bool IsActive() => gameObject.activeSelf;
 
-    public virtual void OnOpen() { }
+    public virtual void OnOpen() { InitUI(); }
     public virtual void OnClose() { }
     public virtual void OnYes() { }
     public virtual void OnNo() { }
@@ -26,8 +26,12 @@ public class CUI : MonoBehaviour
         uiManager.CloseUI();
     }
 
+    protected virtual void OnUpdate() { }
+
     private void Update()
     {
+        OnUpdate();
+
         if (inputController.IsPressedEnter())
         {
             OnYes();

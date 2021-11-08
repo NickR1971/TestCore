@@ -33,6 +33,7 @@ public class CMainMenu : CMenu
 
     public override void OnOpen()
     {
+        base.OnOpen();
         iSaveLoad = AllServices.Container.Get<ISaveLoad>();
         if (loadButton != null)
         {

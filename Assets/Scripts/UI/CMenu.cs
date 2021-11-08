@@ -13,8 +13,7 @@ public class CMenu : CUI
 
     private void OnDestroy()
     {
-        if (localization == null) Debug.Log("Localization service not found!");
-        else localization.RemoveOnChange(RefreshText);
+        localization.RemoveOnChange(RefreshText);
     }
 
     protected void InitMenu()

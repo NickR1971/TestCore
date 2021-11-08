@@ -20,7 +20,7 @@ public class CBattle : CUI
         myCamera.SetPosition(EMapDirection.northwest);
         input = AllServices.Container.Get<IInputController>();
     }
-    private void Update()
+    protected override void OnUpdate()
     {
         if (input.IsPressed(Key.Numpad8)) myCamera.SetPosition(EMapDirection.north);
         if (input.IsPressed(Key.Numpad9)) myCamera.SetPosition(EMapDirection.northeast);
