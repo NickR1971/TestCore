@@ -105,11 +105,17 @@ public class MyInputController : MonoBehaviour, IInputController
         {
             _horizontal = 0;
             _vertical = 0;
-
+/*
             if (keyboard[Key.Numpad4].wasPressedThisFrame) _horizontal = -1;
             if (keyboard[Key.Numpad6].wasPressedThisFrame) _horizontal = 1;
             if (keyboard[Key.Numpad2].wasPressedThisFrame) _vertical = -1;
             if (keyboard[Key.Numpad8].wasPressedThisFrame) _vertical = 1;
+*/
+            if (keyboard[Key.Numpad4].IsPressed()) _horizontal = -1;
+            if (keyboard[Key.Numpad6].IsPressed()) _horizontal = 1;
+            if (keyboard[Key.Numpad2].IsPressed()) _vertical = -1;
+            if (keyboard[Key.Numpad8].IsPressed()) _vertical = 1;
+
             return;
         }
 
@@ -127,6 +133,8 @@ public class MyInputController : MonoBehaviour, IInputController
         if (keyboard[Key.Enter].wasPressedThisFrame) return true;
         if (keyboard[Key.NumpadEnter].wasPressedThisFrame) return true;
 
+        if (IsPressed(MyButton.A)) return true;
+
         return false;
     }
 
@@ -135,6 +143,8 @@ public class MyInputController : MonoBehaviour, IInputController
         //if (Input.GetKeyDown(KeyCode.Escape)) return true;
 
         if (keyboard[Key.Escape].wasPressedThisFrame) return true;
+
+        if (IsPressed(MyButton.B)) return true;
 
         return false;
     }
