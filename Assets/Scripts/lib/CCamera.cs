@@ -12,9 +12,12 @@ public interface ICamera : IService
     void CorrectViewPoint(Vector3 _viewpoint);
     void SetViewPointInstant(Vector3 _viewpoint);
     void SetViewPoint(Vector3 _viewpoint);
+    void SetPositionInstant(Vector3 _position);
     void SetPosition(Vector3 _position);
     void SetPosition(EMapDirection _dir);
     void SetRelativePosition(float _height, float _distance);
+    void SetViewLock(bool _isViewLock);
+    bool IsBusy();
 }
 
 public class CCamera : MonoBehaviour, ICamera
@@ -27,6 +30,7 @@ public class CCamera : MonoBehaviour, ICamera
     private Vector3 currentPosition;
     private float height = 5.0f;
     private float distance = 5.0f;
+    private bool isViewLock = true;
 
     private void InitPositions()
     {
@@ -68,8 +72,9 @@ public class CCamera : MonoBehaviour, ICamera
         {
             view.UpdatePosition();
             viewpoint = view.GetCurrentPosition();
+            transform.LookAt(viewpoint);
         }
-        transform.LookAt(viewpoint);
+        if (isViewLock) transform.LookAt(viewpoint);
     }
 
     private void OnDestroy()
@@ -91,6 +96,7 @@ public class CCamera : MonoBehaviour, ICamera
     public void SetViewPointInstant(Vector3 _viewpoint)
     {
         viewpoint = _viewpoint;
+        transform.LookAt(viewpoint);
     }
     public void SetViewPoint(Vector3 _viewpoint)
     {
@@ -102,6 +108,11 @@ public class CCamera : MonoBehaviour, ICamera
         }
     }
 
+    public void SetPositionInstant(Vector3 _position)
+    {
+        transform.position = _position;
+    }
+
     public void SetPosition(Vector3 _position)
     {
         if (transform.position != _position)
@@ -110,11 +121,11 @@ public class CCamera : MonoBehaviour, ICamera
             move.StartAction();
         }
     }
-
     public void SetPosition(EMapDirection _dir)
     {
         currentPosition = positionList[(int)_dir];
         SetPosition(viewpoint + currentPosition);
+        SetViewPointInstant(viewpoint);
     }
 
     public void SetRelativePosition(float _height, float _distance)
@@ -122,6 +133,16 @@ public class CCamera : MonoBehaviour, ICamera
         if (_height > 0) height = _height;
         if (distance > 0) distance = _distance;
         InitPositions();
+    }
+
+    public void SetViewLock(bool _isViewLock)
+    {
+        isViewLock = _isViewLock;
+    }
+
+    public bool IsBusy()
+    {
+        return move.IsActive() || view.IsActive();
     }
     //--------------------------
 }
