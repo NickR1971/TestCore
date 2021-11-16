@@ -130,7 +130,7 @@ public class CDungeon : MonoBehaviour, IDungeon
     {
         buildSequence = new CRand(data.id);
 
-        GenerateMapFrom(5, 5, 5);
+        GenerateMapFrom(5, 5, 15);
 
     }
 

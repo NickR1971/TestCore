@@ -11,7 +11,7 @@ public class CCameraController : MonoBehaviour
 
     private   void Start()
     {
-        iCamera = AllServices.Container.Get<ICamera>();
+        iCamera = GetComponent<ICamera>();
         iInputController = AllServices.Container.Get<IInputController>();
         iCamera.SetPosition(EMapDirection.south);
     }

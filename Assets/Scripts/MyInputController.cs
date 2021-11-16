@@ -85,10 +85,11 @@ public class MyInputController : MonoBehaviour, IInputController
             _horizontal = 0;
             _vertical = 0;
 
-            if (keyboard[Key.A].wasPressedThisFrame) _horizontal = -1;
-            if (keyboard[Key.D].wasPressedThisFrame) _horizontal = 1;
-            if (keyboard[Key.S].wasPressedThisFrame) _vertical = -1;
-            if (keyboard[Key.W].wasPressedThisFrame) _vertical = 1;
+            if (keyboard[Key.A].IsPressed()) _horizontal = -1;
+            if (keyboard[Key.D].IsPressed()) _horizontal = 1;
+            if (keyboard[Key.S].IsPressed()) _vertical = -1;
+            if (keyboard[Key.W].IsPressed()) _vertical = 1;
+
             return;
         }
 
@@ -105,12 +106,7 @@ public class MyInputController : MonoBehaviour, IInputController
         {
             _horizontal = 0;
             _vertical = 0;
-/*
-            if (keyboard[Key.Numpad4].wasPressedThisFrame) _horizontal = -1;
-            if (keyboard[Key.Numpad6].wasPressedThisFrame) _horizontal = 1;
-            if (keyboard[Key.Numpad2].wasPressedThisFrame) _vertical = -1;
-            if (keyboard[Key.Numpad8].wasPressedThisFrame) _vertical = 1;
-*/
+
             if (keyboard[Key.Numpad4].IsPressed()) _horizontal = -1;
             if (keyboard[Key.Numpad6].IsPressed()) _horizontal = 1;
             if (keyboard[Key.Numpad2].IsPressed()) _vertical = -1;
