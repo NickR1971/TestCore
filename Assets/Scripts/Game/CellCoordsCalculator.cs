@@ -22,7 +22,7 @@ public class Cell
 
     public void SetBaseType(ECellType _type) => baseType = _type;
     public ECellType GetBaseType() => baseType;
-    public Vector3 GetPosition() => position + room.GetPosition();
+    public Vector3 GetPosition() => position;// + room.GetPosition();
     public int GetNearNumber(EMapDirection _direction) => nearList[(int)_direction];
     public void AddRoom(CRoom _room) => room = _room;
     public CRoom GetRoom() => room;
@@ -155,9 +155,7 @@ public abstract class CellCoordsCalculator : IGameMap
         int[] nearList = new int[9];
         for (int i = 0; i < 9; i++) nearList[i] = CalcNum(_x + xList[i], _y + yList[i]);
 
-        Vector3 position;
-        ECellType surfaceType;
-        if (CheckSurface(_position, out position, out surfaceType))
+        if (CheckSurface(_position, out Vector3 position, out ECellType surfaceType))
         {
             Cell cell = new Cell(position, cellNumber, nearList);
             map[cellNumber] = cell;
@@ -174,7 +172,7 @@ public abstract class CellCoordsCalculator : IGameMap
         startCellInRoom = _roomRow * mapWidth * width * height + _roomCol * width;
         Debug.Log($"Row={_roomRow} Col={_roomCol} : Start number is {startCellInRoom}");
     }
-    public abstract void Build(int _roomRow, int _roomCol);
+    public abstract void Build(int _roomRow, int _roomCol, Vector3 _basePosition);
 }
 
 public class CellSquareCalculator : CellCoordsCalculator
@@ -185,7 +183,7 @@ public class CellSquareCalculator : CellCoordsCalculator
         height = 13;
     }
 
-    public override void Build(int _roomRow, int _roomCol)
+    public override void Build(int _roomRow, int _roomCol, Vector3 _basePosition)
     {
         int i, j;
         int cellX, cellY;
@@ -203,15 +201,15 @@ public class CellSquareCalculator : CellCoordsCalculator
             z = z0;
             cellPosition.x = x;
             cellPosition.z = z;
-            CreateCell(cellX, cellY, cellPosition);
+            CreateCell(cellX, cellY, cellPosition + _basePosition);
             for (j = 1; j <= cellY; j++)
             {
                 z = z0 + ((float)j);
                 cellPosition.z = z;
-                CreateCell(cellX, cellY+j, cellPosition);
+                CreateCell(cellX, cellY+j, cellPosition + _basePosition);
                 z = z0 - ((float)j);
                 cellPosition.z = z;
-                CreateCell(cellX, cellY-j, cellPosition);
+                CreateCell(cellX, cellY-j, cellPosition + _basePosition);
             }
         }
     }
@@ -251,7 +249,7 @@ public class CellHexCalculator : CellCoordsCalculator
             xList[n] = 0;
         }
     }
-    public override void Build(int _roomRow, int _roomCol)
+    public override void Build(int _roomRow, int _roomCol, Vector3 _basePosition)
     {
         int i, j;
         int cellX, cellY;
@@ -273,7 +271,7 @@ public class CellHexCalculator : CellCoordsCalculator
             cellPosition.x = x + offset;
             cellPosition.z = z;
             CorrectNearList(offset);
-            CreateCell(cellX, cellY, cellPosition);
+            CreateCell(cellX, cellY, cellPosition + _basePosition);
 
             for (j = 1; j <= cellY; j++)
             {
@@ -283,11 +281,11 @@ public class CellHexCalculator : CellCoordsCalculator
 
                 z = z0 + ((float)j) * 0.866f;
                 cellPosition.z = z;
-                CreateCell(cellX, cellY + j, cellPosition);
+                CreateCell(cellX, cellY + j, cellPosition + _basePosition);
 
                 z = z0 - ((float)j) * 0.866f;
                 cellPosition.z = z;
-                CreateCell(cellX, cellY - j, cellPosition);
+                CreateCell(cellX, cellY - j, cellPosition + _basePosition);
             }
         }
     }

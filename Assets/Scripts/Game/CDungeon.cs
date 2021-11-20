@@ -48,7 +48,7 @@ public class CDungeon : MonoBehaviour, IDungeon
         return true;
     }
 
-    private bool CreateRoom(int _x, int _y)
+    private bool CreateRoom(int _x, int _y, bool _north = true, bool _south = true, bool _west = true, bool _east = true)
     {
         if (CheckPosition(_x, _y) == false) return false;
 
@@ -57,8 +57,8 @@ public class CDungeon : MonoBehaviour, IDungeon
         map[roomNumber] = Instantiate(floorPrefab, transform).GetComponent<CRoom>();
         map[roomNumber]
             .Init(this, cellPrefab, cellCalculator)
-            .SetBasePosition(_x, _y)
-            .Build();
+            .SetWalls(_north, _south, _west, _east)
+            .SetBasePosition(_x, _y);
         return true;
     }
 
@@ -66,41 +66,43 @@ public class CDungeon : MonoBehaviour, IDungeon
     {
         int n = 0;
         _freedir = new EMapDirection[4];
+        CRoom currentRoom = map[GetRoomNumber(_x, _y)];
 
         if (CheckPosition(_x + 1, _y))
         {
-            _freedir[n++] = EMapDirection.east;
+            if (currentRoom.IsFreeEast()) _freedir[n++] = EMapDirection.east;
         }
 
         if (CheckPosition(_x - 1, _y))
         {
-            _freedir[n++] = EMapDirection.west;
+            if (currentRoom.IsFreeWest()) _freedir[n++] = EMapDirection.west;
         }
 
         if (CheckPosition(_x, _y + 1))
         {
-            _freedir[n++] = EMapDirection.north;
+            if (currentRoom.IsFreeNorth()) _freedir[n++] = EMapDirection.north;
         }
 
         if (CheckPosition(_x, _y - 1))
         {
-            _freedir[n++] = EMapDirection.south;
+            if (currentRoom.IsFreeSouth()) _freedir[n++] = EMapDirection.south;
         }
         Debug.Log($"Check x={_x} y={_y} n={n}");
         return n;
     }
 
-    private int GenerateMapFrom(int _x,int _y, int _number)
+    private int GenerateMapFrom(int _x,int _y, int _number, bool _north = true, bool _south = true, bool _west = true, bool _east = true)
     {
-        EMapDirection[] dirFree;
         EMapDirection dir;
         int n, x, y;
 
-        if ( !CreateRoom(_x, _y))  { Debug.LogError($"Can't creat room at x={_x} y={_y}!");  }
+        if (!CreateRoom(_x, _y, _north, _south, _west, _east))  { Debug.LogError($"Can't creat room at x={_x} y={_y}!");  }
         _number--;
         while (_number > 0)
         {
-            n = GetFreeNearList(_x, _y, out dirFree);
+            n = GetFreeNearList(_x, _y, out EMapDirection[] dirFree);
+
+            _north = _south = _west = _east = true;
 
             if (n == 0) return _number;
             if (n == 1) dir = dirFree[0];
@@ -109,19 +111,32 @@ public class CDungeon : MonoBehaviour, IDungeon
             switch (dir)
             {
                 case EMapDirection.north:
+                    _south = false;
                     y++;
                     break;
                 case EMapDirection.south:
+                    _north = false;
                     y--;
                     break;
                 case EMapDirection.east:
+                    _west = false;
                     x++;
                     break;
                 case EMapDirection.west:
-                    x--;
+                    _east = false;
+                    x--; 
                     break;
             }
-            _number = GenerateMapFrom(x, y, _number);
+            n = GetSequenceNumber(100);
+            if (n < 10) _north = _south = _west = _east = false;
+            else if (n < 95)
+            {
+                if (GetSequenceNumber(10) < 4) _north = false;
+                if (GetSequenceNumber(10) < 4) _south = false;
+                if (GetSequenceNumber(10) < 4) _west = false;
+                if (GetSequenceNumber(10) < 4) _east = false;
+            }
+            _number = GenerateMapFrom(x, y, _number, _north, _south, _west, _east);
         }
         return 0;
     }
@@ -130,7 +145,7 @@ public class CDungeon : MonoBehaviour, IDungeon
     {
         buildSequence = new CRand(data.id);
 
-        GenerateMapFrom(5, 5, 15);
+        GenerateMapFrom(5, 5, 15, false, false, false, false);
 
     }
 

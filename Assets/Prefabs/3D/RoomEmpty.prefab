@@ -263,6 +263,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2062d4cca00caf74baa7918a9fb758b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wallNorth: {fileID: 5617879597942736560}
+  wallSouth: {fileID: 7507161023559013202}
+  wallWest: {fileID: 9182657831214854771}
+  wallEast: {fileID: 1971392434473434297}
 --- !u!1 &5617879597942736560
 GameObject:
   m_ObjectHideFlags: 0
