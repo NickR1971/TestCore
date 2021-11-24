@@ -54,11 +54,12 @@ public class CDungeon : MonoBehaviour, IDungeon
 
         int roomNumber = GetRoomNumber(_x, _y);
 
-        map[roomNumber] = Instantiate(floorPrefab, transform).GetComponent<CRoom>();
+        map[roomNumber] = Instantiate(floorPrefab, CRoom.CalcPosition(_x, _y), Quaternion.identity, transform).GetComponent<CRoom>();
         map[roomNumber]
             .Init(this, cellPrefab, cellCalculator)
             .SetWalls(_north, _south, _west, _east)
             .SetBasePosition(_x, _y);
+        cellCalculator.Build(_x, _y, CRoom.CalcPosition(_x, _y));
         return true;
     }
 

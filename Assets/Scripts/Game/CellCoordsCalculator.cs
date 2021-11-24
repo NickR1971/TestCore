@@ -172,7 +172,7 @@ public abstract class CellCoordsCalculator : IGameMap
         startCellInRoom = _roomRow * mapWidth * width * height + _roomCol * width;
         Debug.Log($"Row={_roomRow} Col={_roomCol} : Start number is {startCellInRoom}");
     }
-    public abstract void Build(int _roomRow, int _roomCol, Vector3 _basePosition);
+    public abstract void Build(int _roomCol, int _roomRow, Vector3 _basePosition);
 }
 
 public class CellSquareCalculator : CellCoordsCalculator
@@ -183,7 +183,7 @@ public class CellSquareCalculator : CellCoordsCalculator
         height = 13;
     }
 
-    public override void Build(int _roomRow, int _roomCol, Vector3 _basePosition)
+    public override void Build(int _roomCol, int _roomRow, Vector3 _basePosition)
     {
         int i, j;
         int cellX, cellY;
@@ -249,7 +249,7 @@ public class CellHexCalculator : CellCoordsCalculator
             xList[n] = 0;
         }
     }
-    public override void Build(int _roomRow, int _roomCol, Vector3 _basePosition)
+    public override void Build(int _roomCol, int _roomRow, Vector3 _basePosition)
     {
         int i, j;
         int cellX, cellY;
@@ -265,9 +265,10 @@ public class CellHexCalculator : CellCoordsCalculator
         {
             cellX = i;
             j = 0;
+            //offset = 0.5f;
             x = (float)i + x0;
             z = z0;
-            offset = ((j % 2) != (_roomRow % 2) ? 0.5f : 0.0f);
+            offset = ((_roomRow % 2) == 1 ? 0.5f : 0.0f);
             cellPosition.x = x + offset;
             cellPosition.z = z;
             CorrectNearList(offset);
@@ -275,7 +276,9 @@ public class CellHexCalculator : CellCoordsCalculator
 
             for (j = 1; j <= cellY; j++)
             {
-                offset = ((j % 2) != (_roomRow % 2) ? 0.5f : 0.0f);
+                //offset = ((j % 2) == (_roomRow % 2) ? 0.5f : 0.0f);
+                if (offset > 0.1f) offset = 0.0f;
+                else offset = 0.5f;
                 CorrectNearList(offset);
                 cellPosition.x = x + offset;
 
