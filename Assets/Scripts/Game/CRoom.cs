@@ -12,8 +12,10 @@ public class CRoom : MonoBehaviour
     private IDungeon dungeon = null;
     private GameObject cellPrefab = null;
     private CellCoordsCalculator cellCalculator;
-    private int row = 5;
-    private int col = 5;
+    private int row;
+    private int col;
+    private const int centerCol = 5;
+    private const int centerRow = 5;
     private const float roomSizeX = 10.0f;
     private const float roomSizeZ = 13.0f;
     private bool isFreeNorth = true;
@@ -48,13 +50,17 @@ public class CRoom : MonoBehaviour
         return this;
     }
 
-    public static Vector3 CalcPosition(int _col, int _row) => new Vector3((float)(_col - 5) * roomSizeX, 0, (float)(_row - 5) * roomSizeZ);
+    public static Vector3 CalcPosition(int _col, int _row) => new Vector3((float)(_col - centerCol) * roomSizeX, 0, (float)(_row - centerRow) * roomSizeZ);
+
     public CRoom SetBasePosition(int _col, int _row)
     {
         row = _row; col = _col;
 
         return this;
     }
+
+    public int GetRow() => row;
+    public int GetCol() => col;
 
     public CRoom SetWalls(bool _north, bool _south, bool _west, bool _east)
     {

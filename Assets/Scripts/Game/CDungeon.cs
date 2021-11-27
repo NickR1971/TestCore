@@ -19,8 +19,8 @@ public class CDungeon : MonoBehaviour, IDungeon
     private CRand buildSequence;
     private CellCoordsCalculator cellCalculator;
     private CRoom[] map;
-    private int mapWidth = 10;
-    private int mapHeight = 10;
+    private const int mapWidth = 10;
+    private const int mapHeight = 10;
 
     private void Awake()
     {

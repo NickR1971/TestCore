@@ -54,18 +54,20 @@ public abstract class CellCoordsCalculator : IGameMap
     private int startCellInRoom = 0;
     private Cell[] map;
 
-    protected int width = 10;
-    protected int height = 10;
-    protected int mapWidth = 10;
-    protected int mapHeight = 10;
+    protected readonly int width;
+    protected readonly int height;
+    protected int mapWidth;
+    protected int mapHeight;
     protected const float x0 = -4.5f;
     protected const float y0 = 0.0001f;
     protected const float z0 = 0;
     protected int[] xList = new int[9];
     protected int[] yList = new int[9];
 
-    public CellCoordsCalculator()
+    public CellCoordsCalculator(int _width, int _height)
     {
+        width = _width; height = _height;
+
         int n = (int)EMapDirection.center;
         xList[n] = 0; yList[n] = 0;
         n = (int)EMapDirection.north;
@@ -102,10 +104,10 @@ public abstract class CellCoordsCalculator : IGameMap
         onCell = _onCell;
     }
 
-    public void CreateMap(int _mapWidth, int _mapHeight)
+    public void CreateMap(int _width, int _height)
     {
-        mapHeight = _mapHeight;
-        mapWidth = _mapWidth;
+        mapWidth = _width;
+        mapHeight = _height;
         map = new Cell[mapHeight * mapWidth * width * height];
     }
 
@@ -177,10 +179,8 @@ public abstract class CellCoordsCalculator : IGameMap
 
 public class CellSquareCalculator : CellCoordsCalculator
 {
-    public CellSquareCalculator()
+    public CellSquareCalculator() : base(10,13)
     {
-        width = 10;
-        height = 13;
     }
 
     public override void Build(int _roomCol, int _roomRow, Vector3 _basePosition)
@@ -217,10 +217,8 @@ public class CellSquareCalculator : CellCoordsCalculator
 
 public class CellHexCalculator : CellCoordsCalculator
 {
-    public CellHexCalculator()
+    public CellHexCalculator() : base(10,15)
     {
-        width = 10;
-        height = 15;
     }
 
     private void CorrectNearList(float _offset)
@@ -265,7 +263,6 @@ public class CellHexCalculator : CellCoordsCalculator
         {
             cellX = i;
             j = 0;
-            //offset = 0.5f;
             x = (float)i + x0;
             z = z0;
             offset = ((_roomRow % 2) == 1 ? 0.5f : 0.0f);
@@ -276,7 +273,6 @@ public class CellHexCalculator : CellCoordsCalculator
 
             for (j = 1; j <= cellY; j++)
             {
-                //offset = ((j % 2) == (_roomRow % 2) ? 0.5f : 0.0f);
                 if (offset > 0.1f) offset = 0.0f;
                 else offset = 0.5f;
                 CorrectNearList(offset);
