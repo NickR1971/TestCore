@@ -21,6 +21,8 @@ public class CRecord : MonoBehaviour
     }
     public void InitZero()
     {
+        localization = AllServices.Container.Get<ILocalization>();
+
         saveName.text = localization.GetString(ELocalStringID.core_newSave);
         buttonText.strID = ELocalStringID.core_saveGame.ToString();
         ActionButton.onClick.AddListener(OnNewSave);

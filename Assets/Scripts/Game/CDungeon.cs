@@ -13,12 +13,14 @@ public class CDungeon : MonoBehaviour, IDungeon
 {
     [SerializeField] private GameObject floorPrefab;
     [SerializeField] private GameObject cellPrefab;
+    [SerializeField] private GameObject solidPrefab;
     private IDialog dialog = null;
     private IGameConsole gameConsole = null;
     private SaveData data = null;
     private CRand buildSequence;
     private CellCoordsCalculator cellCalculator;
     private CRoom[] map;
+    private int currentRoomNumber;
     private const int mapWidth = 10;
     private const int mapHeight = 10;
 
@@ -56,10 +58,9 @@ public class CDungeon : MonoBehaviour, IDungeon
 
         map[roomNumber] = Instantiate(floorPrefab, CRoom.CalcPosition(_x, _y), Quaternion.identity, transform).GetComponent<CRoom>();
         map[roomNumber]
-            .Init(this, cellPrefab, cellCalculator)
+            .Init(this)
             .SetWalls(_north, _south, _west, _east)
             .SetBasePosition(_x, _y);
-        cellCalculator.Build(_x, _y, CRoom.CalcPosition(_x, _y));
         return true;
     }
 
@@ -141,13 +142,40 @@ public class CDungeon : MonoBehaviour, IDungeon
         }
         return 0;
     }
+    private void OnCreateCell(Cell _cell)
+    {
+        _cell.AddRoom(map[currentRoomNumber]);
+        _cell.SetObject(Instantiate(cellPrefab, transform));
+    }
 
     private void BuildGame()
     {
         buildSequence = new CRand(data.id);
 
-        GenerateMapFrom(5, 5, 15, false, false, false, false);
+        GenerateMapFrom(5, 5, 50, false, false, false, false);
 
+        int x, y;
+        for (y = 0; y < mapHeight; y++)
+        {
+            for (x = 0; x < mapWidth; x++)
+            {
+                currentRoomNumber = y * mapWidth + x;
+                if (map[currentRoomNumber] == null)
+                {
+                    Instantiate(solidPrefab, CRoom.CalcPosition(x, y), Quaternion.identity, transform);
+                }
+            }
+        }
+            cellCalculator.SetOnCreateCellAction(OnCreateCell);
+        for (y = 0; y < mapHeight; y++)
+        {
+            for(x=0;x<mapWidth;x++)
+            {
+                currentRoomNumber = y * mapWidth + x;
+                if (map[currentRoomNumber] == null) continue;
+                cellCalculator.Build(x, y, CRoom.CalcPosition(x, y));
+            }
+        }
     }
 
     //---------------------------------

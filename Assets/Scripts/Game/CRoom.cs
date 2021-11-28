@@ -10,8 +10,6 @@ public class CRoom : MonoBehaviour
     [SerializeField] private GameObject wallWest;
     [SerializeField] private GameObject wallEast;
     private IDungeon dungeon = null;
-    private GameObject cellPrefab = null;
-    private CellCoordsCalculator cellCalculator;
     private int row;
     private int col;
     private const int centerCol = 5;
@@ -31,21 +29,12 @@ public class CRoom : MonoBehaviour
     private void Start()
     {
         if (dungeon == null) Debug.Log("Not init CRoom before start!");
-        //cellCalculator.Build(row, col, basePosition);
     }
 
-    private void OnCell(Cell _cell)
-    {
-        _cell.AddRoom(this);
-        _cell.SetObject(Instantiate(cellPrefab, transform));
-    }
 
-    public CRoom Init(IDungeon _dungeon, GameObject _cellPrefab, CellCoordsCalculator _cellCalculator)
+    public CRoom Init(IDungeon _dungeon)
     {
         dungeon = _dungeon;
-        cellPrefab = _cellPrefab;
-        cellCalculator = _cellCalculator;
-        cellCalculator.SetOnCellAction(OnCell);
 
         return this;
     }

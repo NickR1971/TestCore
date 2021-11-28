@@ -47,10 +47,11 @@ public interface IGameMap
     int GetWidth();
     int GetHeight();
     Cell GetCell(int _number);
+    Cell GetCell(int _x, int _y);
 }
 public abstract class CellCoordsCalculator : IGameMap
 {
-    private Action<Cell> onCell;
+    private Action<Cell> onCreateCell;
     private int startCellInRoom = 0;
     private Cell[] map;
 
@@ -61,31 +62,31 @@ public abstract class CellCoordsCalculator : IGameMap
     protected const float x0 = -4.5f;
     protected const float y0 = 0.0001f;
     protected const float z0 = 0;
-    protected int[] xList = new int[9];
-    protected int[] yList = new int[9];
+    protected int[] xNearList = new int[9];
+    protected int[] yNearList = new int[9];
 
     public CellCoordsCalculator(int _width, int _height)
     {
         width = _width; height = _height;
 
-        int n = (int)EMapDirection.center;
-        xList[n] = 0; yList[n] = 0;
-        n = (int)EMapDirection.north;
-        xList[n] = 0; yList[n] = 1;
-        n = (int)EMapDirection.northeast;
-        xList[n] = 1; yList[n] = 1;
-        n = (int)EMapDirection.east;
-        xList[n] = 1; yList[n] = 0;
-        n = (int)EMapDirection.southeast;
-        xList[n] = 1; yList[n] = -1;
-        n = (int)EMapDirection.south;
-        xList[n] = 0; yList[n] = -1;
-        n = (int)EMapDirection.southwest;
-        xList[n] = -1; yList[n] = -1;
-        n = (int)EMapDirection.west;
-        xList[n] = -1; yList[n] = 0;
-        n = (int)EMapDirection.northwest;
-        xList[n] = -1; yList[n] = 1;
+        xNearList[(int)EMapDirection.center] = 0;
+        yNearList[(int)EMapDirection.center] = 0;
+        xNearList[(int)EMapDirection.north] = 0;
+        yNearList[(int)EMapDirection.north] = 1;
+        xNearList[(int)EMapDirection.northeast] = 1;
+        yNearList[(int)EMapDirection.northeast] = 1;
+        xNearList[(int)EMapDirection.east] = 1;
+        yNearList[(int)EMapDirection.east] = 0;
+        xNearList[(int)EMapDirection.southeast] = 1;
+        yNearList[(int)EMapDirection.southeast] = -1;
+        xNearList[(int)EMapDirection.south] = 0;
+        yNearList[(int)EMapDirection.south] = -1;
+        xNearList[(int)EMapDirection.southwest] = -1;
+        yNearList[(int)EMapDirection.southwest] = -1;
+        xNearList[(int)EMapDirection.west] = -1;
+        yNearList[(int)EMapDirection.west] = 0;
+        xNearList[(int)EMapDirection.northwest] = -1;
+        yNearList[(int)EMapDirection.northwest] = 1;
     }
 
     public int GetRoomWidth() => width;
@@ -98,10 +99,37 @@ public abstract class CellCoordsCalculator : IGameMap
 
         return map[_number];
     }
-
-    public void SetOnCellAction(Action<Cell> _onCell)
+    public Cell GetCell(int _x, int _y)
     {
-        onCell = _onCell;
+        if (_x < 0)
+        {
+            Debug.Log($"Error cell cordinates: x={_x}? : y={_y}");
+            return null;
+        }
+        if (_x >= GetWidth())
+        {
+            Debug.Log($"Error cell cordinates: x={_x}? : y={_y}");
+            return null;
+        }
+
+        if (_y < 0)
+        {
+            Debug.Log($"Error cell cordinates: x={_x} : y={_y}?");
+            return null;
+        }
+
+        if (_y >= GetHeight())
+        {
+            Debug.Log($"Error cell cordinates: x={_x} : y={_y}?");
+            return null;
+        }
+
+        return GetCell(_y * GetWidth() + _x);
+    }
+
+    public void SetOnCreateCellAction(Action<Cell> _onCell)
+    {
+        onCreateCell = _onCell;
     }
 
     public void CreateMap(int _width, int _height)
@@ -155,14 +183,14 @@ public abstract class CellCoordsCalculator : IGameMap
     {
         int cellNumber = CalcNum(_x, _y);
         int[] nearList = new int[9];
-        for (int i = 0; i < 9; i++) nearList[i] = CalcNum(_x + xList[i], _y + yList[i]);
+        for (int i = 0; i < 9; i++) nearList[i] = CalcNum(_x + xNearList[i], _y + yNearList[i]);
 
         if (CheckSurface(_position, out Vector3 position, out ECellType surfaceType))
         {
             Cell cell = new Cell(position, cellNumber, nearList);
             map[cellNumber] = cell;
             cell.SetBaseType(surfaceType);
-            onCell(cell);
+            onCreateCell(cell);
             cell.SetColor(GetSurfaceColor(surfaceType));
         }
     }
@@ -223,28 +251,19 @@ public class CellHexCalculator : CellCoordsCalculator
 
     private void CorrectNearList(float _offset)
     {
-        int n;
         if (_offset < 0.1f)
         {
-            n = (int)EMapDirection.northeast;
-            xList[n] = 0;
-            n = (int)EMapDirection.southeast;
-            xList[n] = 0;
-             n = (int)EMapDirection.northwest;
-            xList[n] = -1;
-            n = (int)EMapDirection.southwest;
-            xList[n] = -1;
+            xNearList[(int)EMapDirection.northeast] = 0;
+            xNearList[(int)EMapDirection.southeast] = 0;
+            xNearList[(int)EMapDirection.northwest] = -1;
+            xNearList[(int)EMapDirection.southwest] = -1;
        }
         else
         {
-            n = (int)EMapDirection.northeast;
-            xList[n] = 1;
-            n = (int)EMapDirection.southeast;
-            xList[n] = 1;
-             n = (int)EMapDirection.northwest;
-            xList[n] = 0;
-            n = (int)EMapDirection.southwest;
-            xList[n] = 0;
+            xNearList[(int)EMapDirection.northeast] = 1;
+            xNearList[(int)EMapDirection.southeast] = 1;
+            xNearList[(int)EMapDirection.northwest] = 0;
+            xNearList[(int)EMapDirection.southwest] = 0;
         }
     }
     public override void Build(int _roomCol, int _roomRow, Vector3 _basePosition)

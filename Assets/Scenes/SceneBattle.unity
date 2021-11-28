@@ -567,7 +567,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ef7aba8f2ab28c44b0987380960c699, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
 --- !u!1 &1229886281
 GameObject:
   m_ObjectHideFlags: 0
@@ -748,6 +747,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dungeon
       objectReference: {fileID: 0}
+    - target: {fileID: 5339563647223236432, guid: c40c104f74b1e474a8fa1760ea0b8339,
+        type: 3}
+      propertyPath: solidPrefab
+      value: 
+      objectReference: {fileID: 3418789178022664244, guid: 1217c5046b8bda34b940cd27bb65c787,
+        type: 3}
     - target: {fileID: 5598523408969742762, guid: c40c104f74b1e474a8fa1760ea0b8339,
         type: 3}
       propertyPath: m_RootOrder
