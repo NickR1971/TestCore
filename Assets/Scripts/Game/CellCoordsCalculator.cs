@@ -200,7 +200,7 @@ public abstract class CellCoordsCalculator : IGameMap
         if (_roomRow > mapHeight) Debug.LogError("room row above height!");
         if (_roomCol > mapWidth) Debug.LogError("room col above width!");
         startCellInRoom = _roomRow * mapWidth * width * height + _roomCol * width;
-        Debug.Log($"Row={_roomRow} Col={_roomCol} : Start number is {startCellInRoom}");
+        //Debug.Log($"Row={_roomRow} Col={_roomCol} : Start number is {startCellInRoom}");
     }
     public abstract void Build(int _roomCol, int _roomRow, Vector3 _basePosition);
 }

@@ -2,20 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SaveLoad : MonoBehaviour, ISaveLoad
+public class SaveLoad : ISaveLoad
 {
 	private IGame game;
 	private CSaveFile saveFile;
 	private IMainMenu mainMenu;
 
-    void Start()
+	public SaveLoad(CSaveFile _saveFile, IGame _game, IMainMenu _mainMenu)
     {
-		game = AllServices.Container.Get<IGame>();
-		mainMenu = AllServices.Container.Get<IMainMenu>();
-    }
-
-	public void Init(CSaveFile _saveFile)
-    {
+		game = _game;
+		mainMenu = _mainMenu;
 		saveFile = _saveFile;
     }
 

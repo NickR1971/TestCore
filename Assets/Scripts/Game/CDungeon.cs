@@ -89,7 +89,7 @@ public class CDungeon : MonoBehaviour, IDungeon
         {
             if (currentRoom.IsFreeSouth()) _freedir[n++] = EMapDirection.south;
         }
-        Debug.Log($"Check x={_x} y={_y} n={n}");
+        //Debug.Log($"Check x={_x} y={_y} n={n}");
         return n;
     }
 
@@ -151,8 +151,9 @@ public class CDungeon : MonoBehaviour, IDungeon
     private void BuildGame()
     {
         buildSequence = new CRand(data.id);
-
-        GenerateMapFrom(5, 5, 50, false, false, false, false);
+        const int maxroom = 50;
+        int n = maxroom - GenerateMapFrom(5, 5, maxroom, false, false, false, false);
+        Debug.Log($"Create {n} rooms");
 
         int x, y;
         for (y = 0; y < mapHeight; y++)

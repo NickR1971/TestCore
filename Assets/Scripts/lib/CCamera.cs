@@ -28,8 +28,8 @@ public class CCamera : MonoBehaviour, ICamera
     private Vector3 viewpoint;
     private Vector3[] positionList;
     private Vector3 currentPosition;
-    private float height = 5.0f;
-    private float distance = 5.0f;
+    private float height = 15.0f;
+    private float distance = 15.0f;
     private bool isViewLock = true;
 
     private void InitPositions()

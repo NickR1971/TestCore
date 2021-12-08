@@ -12,17 +12,15 @@ public interface IGame : IService
     void RemoveOnSaveAction(Action _a);
 }
 
-public class CGame : MonoBehaviour, IGame
+public class CGame : IGame
 {
     private IDialog dialog = null;
     private IGameConsole gameConsole = null;
     private IDungeon dungeon = null;
 
-    private void Start()
+    public CGame()
     {
-        dialog = AllServices.Container.Get<IDialog>();
-        gameConsole = AllServices.Container.Get<IGameConsole>();
-        dungeon = AllServices.Container.Get<IDungeon>();
+        Debug.Log("CGame object created");
     }
 
     //--------------------------------------------------------------
@@ -30,6 +28,8 @@ public class CGame : MonoBehaviour, IGame
     //--------------------------------------------------------------
     public void CreateGame(SaveData _data)
     {
+        dialog = AllServices.Container.Get<IDialog>();
+        gameConsole = AllServices.Container.Get<IGameConsole>();
         dungeon = AllServices.Container.Get<IDungeon>();
         if (dungeon == null) Debug.LogError("Dungeon interface not found!");
         else dungeon.Create(_data);

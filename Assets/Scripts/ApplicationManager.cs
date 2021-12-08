@@ -31,7 +31,7 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
     {
 		SettingsData settingsData;
 
-		game = GetComponent<IGame>();
+		game = new CGame();
 		SaveData data = game.GetData();
 
 		AllServices.Container.Register<IMainMenu>(this);
@@ -47,8 +47,7 @@ public class ApplicationManager : MonoBehaviour, IMainMenu
 			settingsData = new SettingsData();
         }
 		usedLanguage = settingsData.selected;
-		saveLoad = GetComponent<SaveLoad>();
-		saveLoad.Init(saveFile);
+		saveLoad = new SaveLoad(saveFile, game, this);
 		saveLoad.SetProfile(settingsData.profileName);
 
 		uiManager = new UImanager();
