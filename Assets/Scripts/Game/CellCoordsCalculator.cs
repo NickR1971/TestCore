@@ -59,9 +59,9 @@ public abstract class CellCoordsCalculator : IGameMap
     protected readonly int height;
     protected int mapWidth;
     protected int mapHeight;
-    protected const float x0 = -4.5f;
+    protected const float x0 = 0.5f;
     protected const float y0 = 0.0001f;
-    protected const float z0 = 0;
+    protected const float z0 = 0.5f;
     protected int[] xNearList = new int[9];
     protected int[] yNearList = new int[9];
 
@@ -214,30 +214,21 @@ public class CellSquareCalculator : CellCoordsCalculator
     public override void Build(int _roomCol, int _roomRow, Vector3 _basePosition)
     {
         int i, j;
-        int cellX, cellY;
-        float x, y, z;
         Vector3 cellPosition = new Vector3(0, 0, 0);
         SetStartCell(_roomRow, _roomCol);
 
-        y = y0;
-        cellPosition.y = y;
-        cellY = height / 2;
+        _basePosition.x -= CRoom.GetSizeX() / 2.0f;
+        _basePosition.z -= CRoom.GetSizeZ() / 2.0f;
+
+        cellPosition.y = y0;
+
         for (i = 0; i < width; i++)
         {
-            cellX = i;
-            x = (float)i + x0;
-            z = z0;
-            cellPosition.x = x;
-            cellPosition.z = z;
-            CreateCell(cellX, cellY, cellPosition + _basePosition);
-            for (j = 1; j <= cellY; j++)
+            cellPosition.x = i + x0;
+            for (j = 0; j < height; j++)
             {
-                z = z0 + ((float)j);
-                cellPosition.z = z;
-                CreateCell(cellX, cellY+j, cellPosition + _basePosition);
-                z = z0 - ((float)j);
-                cellPosition.z = z;
-                CreateCell(cellX, cellY-j, cellPosition + _basePosition);
+                cellPosition.z = j + z0;
+                CreateCell(i, j, cellPosition + _basePosition);
             }
         }
     }
@@ -269,41 +260,26 @@ public class CellHexCalculator : CellCoordsCalculator
     public override void Build(int _roomCol, int _roomRow, Vector3 _basePosition)
     {
         int i, j;
-        int cellX, cellY;
-        float x, y, z;
         float offset;
         Vector3 cellPosition = new Vector3(0, 0, 0);
         SetStartCell(_roomRow, _roomCol);
 
-        y = y0;
-        cellPosition.y = y;
-        cellY = height / 2;
-        for (i = 0; i < width; i++)
+        _basePosition.x -= CRoom.GetSizeX() / 2.0f;
+        _basePosition.z -= CRoom.GetSizeZ() / 2.0f;
+
+        cellPosition.y = y0;
+        offset = ((_roomRow % 2) == 1 ? 0.5f : 0.0f);
+
+        for (j = 0; j < height; j++)
         {
-            cellX = i;
-            j = 0;
-            x = (float)i + x0;
-            z = z0;
-            offset = ((_roomRow % 2) == 1 ? 0.5f : 0.0f);
-            cellPosition.x = x + offset;
-            cellPosition.z = z;
+            if (offset > 0.1f) offset = 0.0f;
+            else offset = 0.5f;
             CorrectNearList(offset);
-            CreateCell(cellX, cellY, cellPosition + _basePosition);
-
-            for (j = 1; j <= cellY; j++)
+            cellPosition.z = j*0.866f + z0;
+            for (i = 0; i < width; i++)
             {
-                if (offset > 0.1f) offset = 0.0f;
-                else offset = 0.5f;
-                CorrectNearList(offset);
-                cellPosition.x = x + offset;
-
-                z = z0 + ((float)j) * 0.866f;
-                cellPosition.z = z;
-                CreateCell(cellX, cellY + j, cellPosition + _basePosition);
-
-                z = z0 - ((float)j) * 0.866f;
-                cellPosition.z = z;
-                CreateCell(cellX, cellY - j, cellPosition + _basePosition);
+                cellPosition.x = i + x0 + offset;
+                CreateCell(i, j, cellPosition + _basePosition);
             }
         }
     }

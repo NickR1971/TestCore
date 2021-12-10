@@ -40,7 +40,8 @@ public class CRoom : MonoBehaviour
     }
 
     public static Vector3 CalcPosition(int _col, int _row) => new Vector3((float)(_col - centerCol) * roomSizeX, 0, (float)(_row - centerRow) * roomSizeZ);
-
+    public static float GetSizeX() => roomSizeX;
+    public static float GetSizeZ() => roomSizeZ;
     public CRoom SetBasePosition(int _col, int _row)
     {
         row = _row; col = _col;
