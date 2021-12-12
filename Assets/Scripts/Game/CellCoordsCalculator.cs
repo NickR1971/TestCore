@@ -213,8 +213,7 @@ public class CellSquareCalculator : CellCoordsCalculator
 
     public override void Build(int _roomCol, int _roomRow, Vector3 _basePosition)
     {
-        int i, j;
-        Vector3 cellPosition = new Vector3(0, 0, 0);
+        Vector3 cellPosition = Vector3.zero;
         SetStartCell(_roomRow, _roomCol);
 
         _basePosition.x -= CRoom.GetSizeX() / 2.0f;
@@ -222,13 +221,13 @@ public class CellSquareCalculator : CellCoordsCalculator
 
         cellPosition.y = y0;
 
-        for (i = 0; i < width; i++)
+        for (int col = 0; col < width; col++)
         {
-            cellPosition.x = i + x0;
-            for (j = 0; j < height; j++)
+            cellPosition.x = col + x0;
+            for (int row = 0; row < height; row++)
             {
-                cellPosition.z = j + z0;
-                CreateCell(i, j, cellPosition + _basePosition);
+                cellPosition.z = row + z0;
+                CreateCell(col, row, cellPosition + _basePosition);
             }
         }
     }
@@ -240,9 +239,9 @@ public class CellHexCalculator : CellCoordsCalculator
     {
     }
 
-    private void CorrectNearList(float _offset)
+    private void CorrectNearList(bool _isOddRow)
     {
-        if (_offset < 0.1f)
+        if (_isOddRow)
         {
             xNearList[(int)EMapDirection.northeast] = 0;
             xNearList[(int)EMapDirection.southeast] = 0;
@@ -259,8 +258,6 @@ public class CellHexCalculator : CellCoordsCalculator
     }
     public override void Build(int _roomCol, int _roomRow, Vector3 _basePosition)
     {
-        int i, j;
-        float offset;
         Vector3 cellPosition = new Vector3(0, 0, 0);
         SetStartCell(_roomRow, _roomCol);
 
@@ -268,19 +265,20 @@ public class CellHexCalculator : CellCoordsCalculator
         _basePosition.z -= CRoom.GetSizeZ() / 2.0f;
 
         cellPosition.y = y0;
-        offset = ((_roomRow % 2) == 1 ? 0.5f : 0.0f);
+        bool isOddRow = ((_roomRow * height) % 2) == 0;
 
-        for (j = 0; j < height; j++)
+        for (int row = 0; row < height; row++)
         {
-            if (offset > 0.1f) offset = 0.0f;
-            else offset = 0.5f;
-            CorrectNearList(offset);
-            cellPosition.z = j*0.866f + z0;
-            for (i = 0; i < width; i++)
+            float offset;
+            offset = isOddRow ? 0 : 0.5f;
+            CorrectNearList(isOddRow);
+            cellPosition.z = row*0.866f + z0;
+            for (int col = 0; col < width; col++)
             {
-                cellPosition.x = i + x0 + offset;
-                CreateCell(i, j, cellPosition + _basePosition);
+                cellPosition.x = col + x0 + offset;
+                CreateCell(col, row, cellPosition + _basePosition);
             }
+            isOddRow = !isOddRow;
         }
     }
 }
