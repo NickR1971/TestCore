@@ -3,43 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cell
-{
-    private readonly Vector3 position;
-    private readonly int number;
-    private GameObject obj;
-    private ECellType baseType;
-    private int[] nearList;
-    private CRoom room;
-
-    public Cell(Vector3 _position, int _number, int[] _nearList)
-    {
-        position = _position;
-        number = _number;
-        baseType = ECellType.none;
-        nearList = _nearList;
-    }
-
-    public void SetBaseType(ECellType _type) => baseType = _type;
-    public ECellType GetBaseType() => baseType;
-    public Vector3 GetPosition() => position;// + room.GetPosition();
-    public int GetNearNumber(EMapDirection _direction) => nearList[(int)_direction];
-    public void AddRoom(CRoom _room) => room = _room;
-    public CRoom GetRoom() => room;
-
-    public void SetObject(GameObject _obj)
-    {
-        obj = _obj;
-        obj.transform.position = position;
-    }
-
-    public void SetColor(Color _color)
-    {
-        if (obj == null) Debug.Log($"Cell #{number} mark not instantiated!");
-        else obj.GetComponent<Renderer>().material.color = _color;
-    }
-}
-
 public interface IGameMap
 {
     int GetRoomWidth();
@@ -48,6 +11,7 @@ public interface IGameMap
     int GetHeight();
     Cell GetCell(int _number);
     Cell GetCell(int _x, int _y);
+    Vector3 GetDirectionVector(EMapDirection _direction);
 }
 public abstract class CellCoordsCalculator : IGameMap
 {
@@ -64,6 +28,7 @@ public abstract class CellCoordsCalculator : IGameMap
     protected const float z0 = 0.5f;
     protected int[] xNearList = new int[9];
     protected int[] yNearList = new int[9];
+    protected Vector3[] direction = new Vector3[9];
 
     public CellCoordsCalculator(int _width, int _height)
     {
@@ -87,6 +52,15 @@ public abstract class CellCoordsCalculator : IGameMap
         yNearList[(int)EMapDirection.west] = 0;
         xNearList[(int)EMapDirection.northwest] = -1;
         yNearList[(int)EMapDirection.northwest] = 1;
+        direction[(int)EMapDirection.center] = new Vector3(0, -1, 0);
+        direction[(int)EMapDirection.north] = new Vector3(0, -1, 1);
+        direction[(int)EMapDirection.northeast] = new Vector3(1, -1, 1);
+        direction[(int)EMapDirection.east] = new Vector3(1, -1, 0);
+        direction[(int)EMapDirection.southeast] = new Vector3(1, -1, -1);
+        direction[(int)EMapDirection.south] = new Vector3(0, -1, -1);
+        direction[(int)EMapDirection.southwest] = new Vector3(-1, -1, -1);
+        direction[(int)EMapDirection.west] = new Vector3(-1, -1, 0);
+        direction[(int)EMapDirection.northwest] = new Vector3(-1, -1, 1);
     }
 
     public int GetRoomWidth() => width;
@@ -203,6 +177,11 @@ public abstract class CellCoordsCalculator : IGameMap
         //Debug.Log($"Row={_roomRow} Col={_roomCol} : Start number is {startCellInRoom}");
     }
     public abstract void Build(int _roomCol, int _roomRow, Vector3 _basePosition);
+
+    public Vector3 GetDirectionVector(EMapDirection _direction)
+    {
+        return direction[(int)_direction];
+    }
 }
 
 public class CellSquareCalculator : CellCoordsCalculator
@@ -237,6 +216,10 @@ public class CellHexCalculator : CellCoordsCalculator
 {
     public CellHexCalculator() : base(10,15)
     {
+        direction[(int)EMapDirection.northeast] = new Vector3(0.866f, -1, 0.5f);
+        direction[(int)EMapDirection.southeast] = new Vector3(0.866f, -1, -0.5f);
+        direction[(int)EMapDirection.southwest] = new Vector3(-0.866f, -1, -0.5f);
+        direction[(int)EMapDirection.northwest] = new Vector3(-0.866f, -1, 0.5f);
     }
 
     private void CorrectNearList(bool _isOddRow)
