@@ -23,7 +23,7 @@ public abstract class CellCoordsCalculator : IGameMap
     protected readonly int height;
     protected int mapWidth;
     protected int mapHeight;
-    protected const float x0 = 0.5f;
+    protected const float x0 = 0.45f;
     protected const float y0 = 0.0001f;
     protected const float z0 = 0.5f;
     protected int[] xNearList = new int[9];
