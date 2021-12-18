@@ -31,9 +31,19 @@ public class CCameraController : MonoBehaviour
 
         iInputController.GetRightStick(out float h, out float v);
 
-        float offsetH = h * speed * Time.deltaTime;
-        float offsetV = v * speed * Time.deltaTime;
-        Vector3 pos = new Vector3(offsetH, 0, offsetV);
+        RelativeMove(h, v);
+    }
+    private void RelativeMove(float _horizontal, float _vertical)
+    {
+        Vector3 v = transform.rotation.eulerAngles;
+        float tmpCos = Mathf.Cos(v.y * Mathf.Deg2Rad);
+        float tmpSin = Mathf.Sin(v.y * Mathf.Deg2Rad);
+
+        float offsetH = _horizontal * speed * Time.deltaTime;
+        float offsetV = _vertical * speed * Time.deltaTime;
+        float x = offsetH * tmpCos + offsetV * tmpSin;
+        float z = -offsetH * tmpSin + offsetV * tmpCos;
+        Vector3 pos = new Vector3(x, 0, z);
         iCamera.SetPositionInstant(transform.position + pos);
     }
 }
