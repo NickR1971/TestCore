@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class CRecord : MonoBehaviour
 {
     [SerializeField] private Text saveName;
+    [SerializeField] private Text commentText;
     [SerializeField] private CSaveLoad manager;
     [SerializeField] private CTextLocalize buttonText;
     [SerializeField] private Button ActionButton;
@@ -29,16 +30,18 @@ public class CRecord : MonoBehaviour
         DeleteButton.gameObject.SetActive(false);
     }
 
-    public void InitSave(string _name)
+    public void InitSave(string _name, string _comment)
     {
         saveName.text = _name;
+        commentText.text = _comment;
         buttonText.strID = ELocalStringID.core_saveGame.ToString();
         ActionButton.onClick.AddListener(OnSaveOK);
     }
 
-    public void InitLoad(string _name)
+    public void InitLoad(string _name, string _comment)
     {
         saveName.text = _name;
+        commentText.text = _comment;
         buttonText.strID = ELocalStringID.core_loadGame.ToString();
         ActionButton.onClick.AddListener(OnLoadOK);
     }

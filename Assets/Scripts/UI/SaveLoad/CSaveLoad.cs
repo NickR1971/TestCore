@@ -18,13 +18,13 @@ public class CSaveLoad : CUI
     
     public void OpenSaveWindow()
     {
-        container.CreateListSave(iSaveLoad.GetSavedList());
+        container.CreateListSave(iSaveLoad.GetSavedList(), iSaveLoad.GetCommentList());
         OpenSaveLoadWindow();
     }
 
     public void OpenLoadWindow()
     {
-        container.CreateListLoad(iSaveLoad.GetSavedList());
+        container.CreateListLoad(iSaveLoad.GetSavedList(), iSaveLoad.GetCommentList());
         OpenSaveLoadWindow();
     }
 

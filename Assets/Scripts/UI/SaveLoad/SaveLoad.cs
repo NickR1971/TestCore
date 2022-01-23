@@ -51,4 +51,6 @@ public class SaveLoad : ISaveLoad
 
 	public string[] GetSavedList() => saveFile.GetSavedList();
 
+	public string[] GetCommentList() => saveFile.GetCommentList();
+
 }

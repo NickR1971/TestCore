@@ -8,7 +8,7 @@ public class CRecordContainer : MonoBehaviour
     private GameObject[] records;
 
 
-    public void CreateListSave(string[] _saveNames)
+    public void CreateListSave(string[] _saveNames, string[] _comments)
     {
         records = new GameObject[_saveNames.Length];
         record0.SetActive(true);
@@ -16,12 +16,12 @@ public class CRecordContainer : MonoBehaviour
         for (int i = 0; i < _saveNames.Length; i++)
         {
             records[i] = Instantiate(record0, Vector3.zero, Quaternion.identity, transform);
-            records[i].GetComponent<CRecord>().InitSave(_saveNames[i]);
+            records[i].GetComponent<CRecord>().InitSave(_saveNames[i],_comments[i]);
         }
         record0.GetComponent<CRecord>().InitZero();
     }
 
-    public void CreateListLoad(string[] _saveNames)
+    public void CreateListLoad(string[] _saveNames, string[] _comments)
     {
         records = new GameObject[_saveNames.Length];
         record0.SetActive(true);
@@ -29,7 +29,7 @@ public class CRecordContainer : MonoBehaviour
         for (int i = 0; i < _saveNames.Length; i++)
         {
             records[i] = Instantiate(record0, Vector3.zero, Quaternion.identity, transform);
-            records[i].GetComponent<CRecord>().InitLoad(_saveNames[i]);
+            records[i].GetComponent<CRecord>().InitLoad(_saveNames[i],_comments[i]);
         }
          record0.SetActive(false);
    }

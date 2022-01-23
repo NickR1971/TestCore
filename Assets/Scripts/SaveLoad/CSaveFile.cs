@@ -70,7 +70,7 @@ public class CSaveFile
 	public void Save(string _name, SaveData _data)
     {
 		profileData.RemoveSave(_name);
-		profileData.AddSave(_name);
+		profileData.AddSave(_name, _data.comment);
 		SaveProfile();
 		SaveFile(_data, CreateSaveFileName(_name));
     }
@@ -130,4 +130,5 @@ public class CSaveFile
         }
 	}
 	public string[] GetSavedList() => profileData.GetSavedList();
+	public string[] GetCommentList() => profileData.GetCommentList();
 }

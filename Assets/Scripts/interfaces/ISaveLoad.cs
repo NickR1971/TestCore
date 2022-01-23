@@ -12,4 +12,5 @@ public interface ISaveLoad : IService
 	void Load(string _name);
 	void RemoveSave(string _name);
 	string[] GetSavedList();
+	string[] GetCommentList();
 }
